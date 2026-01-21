@@ -16,10 +16,10 @@ Billing period starts first day of month, ends last day of month.
 Limits are based on billing period.
 
 ## Create new tileset
-tilesets upload-source skilcoyne stressmap plots/LTS.json
+tilesets upload-source rebeccax stressmap plots/LTS.json
 tilesets validate-recipe mapbox/recipe.json
-tilesets create skilcoyne.stressmap_tiles --recipe mapbox/recipe.json --name "stress map"
-tilesets publish skilcoyne.stressmap_tiles
+tilesets create rebeccax.stressmap_tiles --recipe mapbox/recipe.json --name "stress map"
+tilesets publish rebeccax.stressmap_tiles
 
 ## Verify info
 List sources

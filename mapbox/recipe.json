@@ -2,7 +2,7 @@
     "version": 1,
     "layers": {
       "lts": {
-        "source": "mapbox://tileset-source/skilcoyne/stressmap",
+        "source": "mapbox://tileset-source/rebeccax/stressmap",
         "minzoom": 12,
         "maxzoom": 16,
         "features": {

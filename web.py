@@ -15,7 +15,7 @@ args = parser.parse_args(sys.argv[1:])
 if args.plot:
     PLOT = args.plot
 else:
-    PLOT = 'map/local_data.html'
+    PLOT = 'index.html'
 if args.port:
     PORT = args.port
 else:
