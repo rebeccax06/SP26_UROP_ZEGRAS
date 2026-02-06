@@ -32,14 +32,34 @@
                 sans-serif;
             position: absolute;
             width: 100px;
-            top: 0;
-            left: 0;
             padding: 1px;
+        }
+
+        #zoom-level {
+          top: 10px;
+          left: 10px;
+        }
+
+        #legend {
+          padding: 10px;
+          box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+          line-height: 18px;
+          margin-bottom: 40px;
+          bottom: 10px;
+          right: 10px;
+          width: 150px;
+        }
+        .legend-key {
+          display: inline-block;
+          border-radius: 20%;
+          width: 10px;
+          height: 10px;
+          margin-right: 5px;
         }
     </style>  
 <h1>BCU Labs - Data Team</h1>
 <div id="map"></div>
-<div class="map-overlay top">
+<div class="map-overlay top", id="zoom-level">
     <div class="map-overlay-inner">
         <fieldset>
             <label>Zoom Level: </label>
@@ -47,6 +67,7 @@
         </fieldset>
     </div>
 </div>
+<div class="map-overlay" id="legend"></div>
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
 <script>
     const baseWidth = 3;
@@ -57,7 +78,7 @@
         container: 'map', // container ID
         center: [-71.057083, 42.361145], // Boston starting position [lng, lat]
         // style: "mapbox://styles/skilcoyne/cly7vy7v200ut01qohg1ycwl7/draft",
-        style:'mapbox://styles/rebeccax/cmalzawk3004501s4g1uk7trt',
+        style:'mapbox://styles/mapbox/light-v11',
         zoom: baseZoom // starting zoom
     });
 
@@ -76,6 +97,19 @@
             url: 'mapbox://rebeccax.stressmap_tiles'
         });
 
+        const colors = [
+            '#28BCEB',  // LTS 1
+            '#A4FC3C',  // LTS 2
+            '#FB7E21',  // LTS 3
+            '#7A0403'   // LTS 4
+        ];
+        const LTS_names = [
+            'Level of Traffic Stress 1',
+            'Level of Traffic Stress 2',
+            'Level of Traffic Stress 3',
+            'Level of Traffic Stress 4'
+        ];
+
         map.addLayer({
             'id': 'lts-layer',
             "type": "line",
@@ -87,10 +121,10 @@
                     ['get', 'LTS'],
                     // 0, 'black',
                     // Colors based on 5 equally spaced from 'turbo' colormap
-                    1, '#28BCEB',
-                    2, '#A4FC3C',
-                    3, '#FB7E21',
-                    4, '#7A0403',
+                    1, colors[0],
+                    2, colors[1],
+                    3, colors[2],
+                    4, colors[3],
                     'white'
                 ],
                 'line-width': baseWidth
@@ -99,6 +133,23 @@
         },
         'road-label-simple' // Add layer below labels
     );
+
+    // Create legend
+    const legend = document.getElementById('legend');
+
+    LTS_names.forEach((LTS_name, i) => {
+      const color = colors[i];
+      const item = document.createElement('div');
+      const key = document.createElement('span');
+      key.className = 'legend-key';
+      key.style.backgroundColor = color;
+
+      const value = document.createElement('span');
+      value.innerHTML = `${LTS_name}`;
+      item.appendChild(key);
+      item.appendChild(value);
+      legend.appendChild(item);
+    });
 
         // When a click event occurs on a feature in the places layer, open a popup at the
         // location of the feature, with description HTML from its properties.
