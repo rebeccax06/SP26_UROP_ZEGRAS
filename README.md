@@ -29,6 +29,10 @@ You can run the mapbox webpage with the following command
  python web.py
 ```
 
+To overlay the go pro photos,
+```commandline
+ python web.py -plot-go-pro /path/to/folder/of/gopro/jpgs
+ ```
 Vist http://localhost:8000 to view the rendered LTS.
 
 *Please note that the geojson file for Boston is 40mb and may render slowly with artifacts*
