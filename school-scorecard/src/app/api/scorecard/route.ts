@@ -4,27 +4,33 @@ import {
   createStopsProviderGTFS,
   createRoutesProviderGTFS,
   createScheduleProviderGTFS,
-  createArchivedObservedProviderMBTA,
-  createLiveObservedProviderSwiftly,
+  createArchivedObservedProviderCSV,
 } from '@/lib/providers';
 import { computeScorecard } from '@/lib/scorecard/computeScorecard';
+import { loadCrowdingAnnotations } from '@/lib/crowding/load-annotations';
 import { cacheGet, cacheSet, CACHE_NAMES, TTL } from '@/lib/cache/server-cache';
+import type { StopWithHeadways } from '@/lib/types';
 
 const stopsProvider = createStopsProviderGTFS();
 const routesProvider = createRoutesProviderGTFS();
 const scheduleProvider = createScheduleProviderGTFS();
-const archivedProvider = createArchivedObservedProviderMBTA();
-const liveProvider = createLiveObservedProviderSwiftly();
+const archivedProvider = createArchivedObservedProviderCSV();
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const schoolId = searchParams.get('schoolId') ?? '';
-    const timeWindow = (searchParams.get('timeWindow') ?? 'AM') as 'AM' | 'PM' | 'AS';
-    const startDate = searchParams.get('startDate') ?? '';
-    const endDate = searchParams.get('endDate') ?? '';
     const radiusParam = searchParams.get('radiusMeters');
     const radiusMeters = radiusParam ? parseInt(radiusParam, 10) : undefined;
+
+    // New params: explicit date and time range (preferred)
+    const date = searchParams.get('date') ?? null;           // YYYY-MM-DD, single day
+    const startTime = searchParams.get('startTime') ?? '07:00'; // HH:MM
+    const endTime = searchParams.get('endTime') ?? '09:00';     // HH:MM
+
+    // Legacy params kept for backward compat
+    const startDate = searchParams.get('startDate') ?? (date ?? formatDate(subDays(new Date(), 7)));
+    const endDate = searchParams.get('endDate') ?? (date ?? formatDate(new Date()));
 
     if (!schoolId) {
       return NextResponse.json({ error: 'schoolId required' }, { status: 400 });
@@ -36,15 +42,17 @@ export async function GET(request: Request) {
     }
 
     const effectiveRadius = radiusMeters ?? school.radiusMeters;
-    const effectiveStart = startDate || formatDate(subDays(new Date(), 7));
-    const effectiveEnd = endDate || formatDate(new Date());
-    const cacheKey = `${schoolId}:${timeWindow}:${effectiveStart}:${effectiveEnd}:${effectiveRadius}`;
+    const cacheKey = `${schoolId}:${date ?? `${startDate}:${endDate}`}:${startTime}:${endTime}:${effectiveRadius}`;
+
     interface CachedResponse {
       schoolId: string;
-      timeWindow: string;
+      date: string | null;
+      startTime: string;
+      endTime: string;
       startDate: string;
       endDate: string;
-      rows: Awaited<ReturnType<typeof computeScorecard>>;
+      rows: Awaited<ReturnType<typeof computeScorecard>>['rows'];
+      headwaysByStop: Awaited<ReturnType<typeof computeScorecard>>['headwaysByStop'];
       stops: Awaited<ReturnType<typeof stopsProvider.getStopsNear>>;
       routes: Awaited<ReturnType<typeof routesProvider.getRoutesServingStops>>;
     }
@@ -60,27 +68,47 @@ export async function GET(request: Request) {
     const routes = stopIds.length ? await routesProvider.getRoutesServingStops(stopIds) : [];
     const routeIds = routes.map((r) => r.routeId);
 
-    const rows = await computeScorecard({
+    const { rows, headwaysByStop } = await computeScorecard({
       schoolId,
       stopIds,
       routeIds,
       stops,
       routes,
-      timeWindow,
-      startDate: effectiveStart,
-      endDate: effectiveEnd,
+      startTime,
+      endTime,
+      date: date ?? undefined,
+      startDate,
+      endDate,
       scheduleProvider,
       archivedProvider,
-      liveProvider,
     });
+
+    const crowding = loadCrowdingAnnotations();
+    const headwaysByStopWithCrowding: StopWithHeadways[] = headwaysByStop
+      .map((stop) => ({
+        ...stop,
+        routes: stop.routes.map((r) => ({
+          ...r,
+          hasCrowdingReport: crowding.hasCrowding.has(`${stop.stopId}:${r.routeId}`),
+          hasDeniedBoardingsReport: crowding.hasDeniedBoardings.has(`${stop.stopId}:${r.routeId}`),
+        })),
+      }))
+      .filter((stop) => stop.routes.length > 0);
+
+    // Only include stops served by at least one route with data
+    const activeStopIds = new Set(headwaysByStopWithCrowding.map((s) => s.stopId));
+    const filteredStops = stops.filter((s) => activeStopIds.has(s.stopId));
 
     const response: CachedResponse = {
       schoolId,
-      timeWindow,
-      startDate: effectiveStart,
-      endDate: effectiveEnd,
+      date,
+      startTime,
+      endTime,
+      startDate,
+      endDate,
       rows,
-      stops,
+      headwaysByStop: headwaysByStopWithCrowding,
+      stops: filteredStops,
       routes,
     };
     cacheSet(CACHE_NAMES.SCORECARD, cacheKey, response, TTL.SCORECARD_MS);

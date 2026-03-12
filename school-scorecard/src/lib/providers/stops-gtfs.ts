@@ -18,10 +18,10 @@ export function createStopsProviderGTFS(gtfsDir?: string): StopsProvider {
       const { lat, lon, radiusMeters } = options;
       const index = await loadGtfs(gtfsDir);
       const stops: Stop[] = [];
-      for (const s of index.stops.values()) {
+      Array.from(index.stops.values()).forEach((s) => {
         const stopLat = parseFloat(s.stop_lat);
         const stopLon = parseFloat(s.stop_lon);
-        if (isNaN(stopLat) || isNaN(stopLon)) continue;
+        if (isNaN(stopLat) || isNaN(stopLon)) return;
         const dist = haversineMeters(lat, lon, stopLat, stopLon);
         if (dist <= radiusMeters) {
           stops.push({
@@ -32,7 +32,7 @@ export function createStopsProviderGTFS(gtfsDir?: string): StopsProvider {
             distanceMeters: Math.round(dist),
           });
         }
-      }
+      });
       stops.sort((a, b) => (a.distanceMeters ?? 0) - (b.distanceMeters ?? 0));
       return stops;
     },

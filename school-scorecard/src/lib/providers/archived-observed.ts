@@ -5,14 +5,21 @@ export interface ArchivedObservedOptions {
   stopId: string;
   startDate: string; // YYYY-MM-DD
   endDate: string;
-  /** Map to hour ranges for query (e.g. AM -> 7-9) */
-  timeWindow: string;
+  /**
+   * Legacy time window key (AM|PM|AS). Used only when startTime/endTime are absent.
+   * @deprecated prefer startTime + endTime
+   */
+  timeWindow?: string;
+  /** Filter to a single service date (YYYY-MM-DD). Overrides startDate/endDate. */
+  date?: string;
+  /** Start of time window as HH:MM (24h). Overrides timeWindow. */
+  startTime?: string;
+  /** End of time window as HH:MM (24h). Overrides timeWindow. */
+  endTime?: string;
+  /** Filter by direction(s). If omitted or empty, includes both. */
+  directions?: string[];
 }
 
-/**
- * MBTA archived last-week observed metrics.
- * Configurable base URL and dataset; TODO: fill in exact query fields/endpoint.
- */
 export interface ArchivedObservedProvider {
   fetchArchivedMetrics(options: ArchivedObservedOptions): Promise<ArchivedObservedResult | null>;
 }

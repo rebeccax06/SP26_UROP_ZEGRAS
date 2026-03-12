@@ -61,17 +61,8 @@ export interface ArchivedObservedResult {
   bunchingRate: number;
   /** If true, data is route-level only (stop-level not available) */
   isRouteLevel?: boolean;
-}
-
-// --- Live observed (Swiftly) ---
-export interface LiveObservedResult {
-  routeId: string;
-  stopId: string;
-  liveMedianHeadwayMinutes: number;
-  liveIQRMinutes: number;
-  liveBunchingRate: number;
-  /** Window used in minutes */
-  windowMinutes: number;
+  /** Median scheduled headway from MBTA CSV data (seconds→minutes), when available */
+  csvScheduledHeadwayMinutes?: number;
 }
 
 // --- Scorecard row (assembled) ---
@@ -85,13 +76,8 @@ export interface ScorecardRow {
   archivedP25Min: number | null;
   archivedP75Min: number | null;
   archivedBunchingRate: number | null;
-  liveMedianMin: number | null;
-  liveIQRMin: number | null;
-  liveBunchingRate: number | null;
   /** observed/scheduled for archived */
   reliabilityRatioArchived: number | null;
-  /** observed/scheduled for live */
-  reliabilityRatioLive: number | null;
   dataQualityFlags: string[];
 }
 
@@ -103,6 +89,57 @@ export interface ScorecardQueryParams {
   endDate: string;
 }
 
+/** Per-route headway summary at a stop (for map popups) */
+export interface StopRouteHeadway {
+  routeId: string;
+  routeShortName: string;
+  scheduledMedianMin: number;
+  archivedMedianMin: number | null;
+  reliabilityRatioArchived: number | null;
+  /** Median scheduled headway from MBTA CSV data (minutes), shown alongside actual in popups */
+  csvScheduledMedianMin?: number | null;
+  /** True if this route has worse-than-scheduled headway (e.g. ratio >= 1.2) */
+  hasDelay?: boolean;
+  /** True if crowding has been reported at this stop×route */
+  hasCrowdingReport?: boolean;
+  /** True if denied boardings have been reported at this stop×route */
+  hasDeniedBoardingsReport?: boolean;
+}
+
+/** Single entry in data/crowding-annotations.json */
+export interface CrowdingAnnotationEntry {
+  stopId: string;
+  routeId: string;
+  type: 'crowding' | 'denied_boardings';
+  note?: string;
+}
+
+/** Key = `${stopId}:${routeId}`, value = flags for that stop×route */
+export interface CrowdingAnnotationsMap {
+  hasCrowding: Set<string>;
+  hasDeniedBoardings: Set<string>;
+}
+
+/** Stop with headways per route (for map). routes may be empty if no data. */
+export interface StopWithHeadways extends Stop {
+  routes: StopRouteHeadway[];
+}
+
+/** Per-timepoint-stop headway data for route map overlay */
+export interface RouteStopHeadway {
+  stopId: string;
+  stopName: string;
+  lat: number;
+  lon: number;
+  directionId: string;
+  timePointOrder: number;
+  scheduledMedianMin: number;
+  actualMedianMin: number;
+  /** actualMedianMin / scheduledMedianMin */
+  ratio: number;
+  sampleCount: number;
+}
+
 export interface ScorecardApiResponse {
   schoolId: string;
   timeWindow: TimeWindowId;
@@ -111,4 +148,6 @@ export interface ScorecardApiResponse {
   rows: ScorecardRow[];
   stops: Stop[];
   routes: Route[];
+  /** Per-stop headways by route (for map popups). Only present when scorecard has data. */
+  headwaysByStop?: StopWithHeadways[];
 }

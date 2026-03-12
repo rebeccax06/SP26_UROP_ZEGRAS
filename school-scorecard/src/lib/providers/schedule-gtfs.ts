@@ -3,9 +3,24 @@ import { median } from '@/lib/utils/median';
 import type { ScheduleProvider, ScheduleProviderOptions } from './schedule';
 import type { ScheduledHeadwayResult } from '@/lib/types';
 
+// Permanent memo keyed by "sortedRouteIds|sortedStopIds|serviceDate|startTime|endTime".
+// GTFS is static, so the same input always produces the same result.
+const scheduleCache = new Map<string, ScheduledHeadwayResult[]>();
+
 export function createScheduleProviderGTFS(gtfsDir?: string): ScheduleProvider {
   return {
     async getScheduledHeadways(options: ScheduleProviderOptions): Promise<ScheduledHeadwayResult[]> {
+      const { routeIds, stopIds, serviceDate, startTime, endTime } = options;
+
+      const memoKey = [
+        [...routeIds].sort().join(','),
+        [...stopIds].sort().join(','),
+        serviceDate,
+        startTime,
+        endTime,
+      ].join('|');
+      if (scheduleCache.has(memoKey)) return scheduleCache.get(memoKey)!;
+
       let index;
       try {
         index = await loadGtfs(gtfsDir);
@@ -13,7 +28,6 @@ export function createScheduleProviderGTFS(gtfsDir?: string): ScheduleProvider {
         console.error('[ScheduleProviderGTFS] Failed to load GTFS:', err);
         throw new Error(`GTFS loading failed: ${err instanceof Error ? err.message : String(err)}`);
       }
-      const { routeIds, stopIds, serviceDate, startTime, endTime } = options;
       const startMin = parseTimeToMinutes(startTime);
       const endMin = parseTimeToMinutes(endTime);
       const serviceIds = getServiceIdsForDateFromIndex(index, serviceDate);
@@ -82,6 +96,7 @@ export function createScheduleProviderGTFS(gtfsDir?: string): ScheduleProvider {
         }
       }
 
+      scheduleCache.set(memoKey, results);
       return results;
     },
   };

@@ -196,9 +196,9 @@ async function loadStopTimes(dir: string): Promise<Map<string, GtfsStopTime[]>> 
     if (!map.has(trip_id)) map.set(trip_id, []);
     map.get(trip_id)!.push(st);
   }
-  for (const arr of map.values()) {
+  Array.from(map.values()).forEach((arr) => {
     arr.sort((a, b) => parseInt(a.stop_sequence, 10) - parseInt(b.stop_sequence, 10));
-  }
+  });
   if (DEBUG) console.log('[GTFS] Loaded stop_times for', map.size, 'trips');
   return map;
 }
@@ -300,13 +300,13 @@ function getServiceIdsForDate(
     const dow = dowKeys[dayOfWeek]!;
     const result = new Set<string>();
 
-    for (const [serviceId, cal] of calendar) {
+    Array.from(calendar.entries()).forEach(([serviceId, cal]) => {
       const start = cal.start_date.replace(/-/g, '');
       const end = cal.end_date.replace(/-/g, '');
       if (dateStrNormalized >= start && dateStrNormalized <= end && cal[dow] === '1') {
         result.add(serviceId);
       }
-    }
+    });
     const exceptions = calendarDates.get(dateStrNormalized) ?? [];
     for (const ex of exceptions) {
       if (ex.exception_type === '1') result.add(ex.service_id);

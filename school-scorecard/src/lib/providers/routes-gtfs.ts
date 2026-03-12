@@ -11,17 +11,18 @@ export function createRoutesProviderGTFS(gtfsDir?: string): RoutesProvider {
       const index = await loadGtfs(gtfsDir);
       const stopSet = new Set(stopIds);
       const routeIds = new Set<string>();
-      for (const [routeId, trips] of index.tripsByRoute) {
+      Array.from(index.tripsByRoute.entries()).forEach(([routeId, trips]) => {
+        if (routeId.startsWith('Shuttle')) return;
         for (const trip of trips) {
           const stopTimes = index.stopTimesByTrip.get(trip.trip_id) ?? [];
           if (stopTimes.some((st) => stopSet.has(st.stop_id))) {
             routeIds.add(routeId);
-            break;
+            return;
           }
         }
-      }
+      });
       const routes: Route[] = [];
-      for (const routeId of routeIds) {
+      Array.from(routeIds).forEach((routeId) => {
         const r = index.routes.get(routeId);
         if (r) {
           routes.push({
@@ -30,7 +31,7 @@ export function createRoutesProviderGTFS(gtfsDir?: string): RoutesProvider {
             routeLongName: r.route_long_name,
           });
         }
-      }
+      });
       return routes;
     },
   };

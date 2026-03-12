@@ -12,6 +12,7 @@ MBTA bus reliability around schools: scheduled vs archived (last week) vs live (
 2. **Environment**
    - Copy `.env.example` to `.env.local`.
    - Set `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` for the map.
+   - For archived (observed) headways and derived delays: set `TRANSITMATTERS_API_KEY` and optionally `TRANSITMATTERS_BASE_URL` (default `https://dashboard.transitmatters.org`).
    - Optionally set MBTA archive and Swiftly env vars (see `.env.example`). Leave blank for MVP; scorecard will still show scheduled headways when GTFS is present.
 
 3. **GTFS data (for scheduled headways and stops/routes)**
@@ -48,6 +49,12 @@ npm test
 - Unit: median, IQR, scorecard row shape, scheduled headway on fixture GTFS.
 - Integration: `GET /api/scorecard` shape (run with dev server or set `TEST_API_BASE`).
 
+
+## Running data analysis
+python data-analysis.py --stops /Users/rebeccaxiong/Documents/SP26_UROP_ZEGRAS/school-scorecard/data/gtfs/stops.txt
+
 ## Storage
 
-No large local DB: only GTFS files under `data/gtfs/` and optional in-memory cache (TTL). No SQLite required for MVP.
+- **GTFS**: `data/gtfs/` for schedule data.
+- **Crowding / denied boardings**: Optional `data/crowding-annotations.json` — JSON array of `{ "stopId", "routeId", "type": "crowding" | "denied_boardings", "note?" }`. Use GTFS `stop_id` and `route_id` values. The map shows “(crowding reported)” and “(denied boardings)” on stop popups for matching stop×route pairs.
+- In-memory cache (TTL) for scorecard; no SQLite required for MVP.

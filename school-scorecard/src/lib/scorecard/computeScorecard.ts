@@ -2,15 +2,13 @@ import type {
   ScorecardRow,
   Stop,
   Route,
-  TimeWindowId,
   ScheduledHeadwayResult,
   ArchivedObservedResult,
-  LiveObservedResult,
+  StopWithHeadways,
+  StopRouteHeadway,
 } from '@/lib/types';
 import type { ScheduleProvider } from '@/lib/providers/schedule';
 import type { ArchivedObservedProvider } from '@/lib/providers/archived-observed';
-import type { LiveObservedProvider } from '@/lib/providers/live-observed';
-import { getTimeWindowHourRange } from '@/lib/providers/time-window-mapping';
 
 export interface ComputeScorecardInput {
   schoolId: string;
@@ -18,49 +16,60 @@ export interface ComputeScorecardInput {
   routeIds: string[];
   stops: Stop[];
   routes: Route[];
-  timeWindow: TimeWindowId;
+  /** Start of time window as HH:MM (24h), e.g. "07:00" */
+  startTime: string;
+  /** End of time window as HH:MM (24h), e.g. "09:00" */
+  endTime: string;
+  /** Single service date for CSV filter (YYYY-MM-DD). If omitted, averages across all available dates. */
+  date?: string;
+  /** @deprecated kept for cache-key compat; prefer startTime/endTime/date */
   startDate: string;
   endDate: string;
+  /** Filter by direction(s). If omitted, includes both Inbound and Outbound. */
+  directions?: string[];
   scheduleProvider: ScheduleProvider;
   archivedProvider: ArchivedObservedProvider;
-  liveProvider: LiveObservedProvider;
 }
 
-export async function computeScorecard(input: ComputeScorecardInput): Promise<ScorecardRow[]> {
+const RELIABILITY_DELAY_THRESHOLD = 1.2;
+
+export interface ComputeScorecardOutput {
+  rows: ScorecardRow[];
+  headwaysByStop: StopWithHeadways[];
+}
+
+export async function computeScorecard(input: ComputeScorecardInput): Promise<ComputeScorecardOutput> {
   const {
     schoolId,
     stopIds,
     routeIds,
     stops,
     routes,
-    timeWindow,
+    startTime,
+    endTime,
+    date,
     startDate,
     endDate,
+    directions,
     scheduleProvider,
     archivedProvider,
-    liveProvider,
   } = input;
-
-  const range = getTimeWindowHourRange(schoolId, timeWindow);
-  const startTime = range?.startTime ?? '07:00';
-  const endTime = range?.endTime ?? '09:00';
 
   const routeMap = new Map(routes.map((r) => [r.routeId, r]));
   const stopMap = new Map(stops.map((s) => [s.stopId, s]));
 
-  // Early return if no routes or stops
   if (routeIds.length === 0 || stopIds.length === 0) {
     console.warn(
       `[computeScorecard] No routes (${routeIds.length}) or stops (${stopIds.length}) found for school ${schoolId}`
     );
-    return [];
+    return { rows: [], headwaysByStop: [] };
   }
 
-  const [scheduledList, archivedMap, liveMap] = await Promise.all([
+  const [scheduledList, archivedMap] = await Promise.all([
     scheduleProvider.getScheduledHeadways({
       routeIds,
       stopIds,
-      serviceDate: startDate,
+      serviceDate: date ?? startDate,
       startTime,
       endTime,
     }).catch((err) => {
@@ -75,7 +84,10 @@ export async function computeScorecard(input: ComputeScorecardInput): Promise<Sc
             stopId,
             startDate,
             endDate,
-            timeWindow,
+            date,
+            startTime,
+            endTime,
+            directions,
           }).then((r) => ({ key: `${routeId}:${stopId}`, value: r })).catch((err) => {
             console.warn(`[computeScorecard] Archived metrics error for ${routeId}:${stopId}:`, err);
             return { key: `${routeId}:${stopId}`, value: null };
@@ -84,23 +96,6 @@ export async function computeScorecard(input: ComputeScorecardInput): Promise<Sc
       )
     ).then((pairs) => {
       const m = new Map<string, ArchivedObservedResult | null>();
-      pairs.forEach(({ key, value }) => m.set(key, value));
-      return m;
-    }),
-    Promise.all(
-      routeIds.flatMap((routeId) =>
-        stopIds.map((stopId) =>
-          liveProvider.fetchLiveHeadways({ routeId, stopId, windowMinutes: 60 }).then((r) => ({
-            key: `${routeId}:${stopId}`,
-            value: r,
-          })).catch((err) => {
-            console.warn(`[computeScorecard] Live headways error for ${routeId}:${stopId}:`, err);
-            return { key: `${routeId}:${stopId}`, value: null };
-          })
-        )
-      )
-    ).then((pairs) => {
-      const m = new Map<string, LiveObservedResult | null>();
       pairs.forEach(({ key, value }) => m.set(key, value));
       return m;
     }),
@@ -113,10 +108,8 @@ export async function computeScorecard(input: ComputeScorecardInput): Promise<Sc
 
   if (scheduledList.length === 0) {
     console.warn(
-      `[computeScorecard] No scheduled headways computed for ${routeIds.length} routes, ${stopIds.length} stops, time window ${startTime}-${endTime}, date ${startDate}`
+      `[computeScorecard] No GTFS scheduled headways for ${routeIds.length} routes, ${stopIds.length} stops, ${startTime}–${endTime}`
     );
-  } else {
-    console.log(`[computeScorecard] Computed ${scheduledList.length} scheduled headways`);
   }
 
   const rows: ScorecardRow[] = [];
@@ -127,35 +120,37 @@ export async function computeScorecard(input: ComputeScorecardInput): Promise<Sc
       .map((stopId) => {
         const scheduled = scheduledByRouteStop.get(`${routeId}:${stopId}`);
         const archived = archivedMap.get(`${routeId}:${stopId}`);
-        const live = liveMap.get(`${routeId}:${stopId}`);
-        const scheduledMedian = scheduled?.scheduledMedianHeadwayMinutes ?? 0;
+
+        // Prefer GTFS scheduled headway; fall back to CSV computed from scheduled times
+        const gtfsScheduled = scheduled?.scheduledMedianHeadwayMinutes ?? 0;
+        const csvScheduled = archived?.csvScheduledHeadwayMinutes ?? null;
+        const effectiveScheduled = gtfsScheduled > 0
+          ? gtfsScheduled
+          : (csvScheduled ?? 0);
+
         const flags: string[] = [];
+        if (gtfsScheduled <= 0 && csvScheduled != null && csvScheduled > 0) flags.push('csv-scheduled');
         if (archived?.isRouteLevel) flags.push('archived-route-level');
         if (!archived) flags.push('no-archived');
-        if (!live) flags.push('no-live');
+
         const reliabilityArchived =
-          scheduledMedian > 0 && archived
-            ? archived.observedMedianHeadwayMinutes / scheduledMedian
+          effectiveScheduled > 0 && archived
+            ? archived.observedMedianHeadwayMinutes / effectiveScheduled
             : null;
-        const reliabilityLive =
-          scheduledMedian > 0 && live ? live.liveMedianHeadwayMinutes / scheduledMedian : null;
+
         return {
           keyStopId: stopId,
           keyStopName: stopMap.get(stopId)?.stopName,
-          scheduledMedianMin: scheduledMedian,
+          scheduledMedianMin: effectiveScheduled,
           archivedMedianMin: archived?.observedMedianHeadwayMinutes ?? null,
           archivedP25Min: archived?.headwayP25Minutes ?? null,
           archivedP75Min: archived?.headwayP75Minutes ?? null,
           archivedBunchingRate: archived?.bunchingRate ?? null,
-          liveMedianMin: live?.liveMedianHeadwayMinutes ?? null,
-          liveIQRMin: live?.liveIQRMinutes ?? null,
-          liveBunchingRate: live?.liveBunchingRate ?? null,
           reliabilityRatioArchived: reliabilityArchived,
-          reliabilityRatioLive: reliabilityLive,
           dataQualityFlags: flags,
         };
       })
-      .filter((r) => r.scheduledMedianMin > 0 || r.archivedMedianMin != null || r.liveMedianMin != null);
+      .filter((r) => r.archivedMedianMin != null);
 
     if (stopResults.length === 0) continue;
     const keyStop = stopResults[0]!;
@@ -169,11 +164,7 @@ export async function computeScorecard(input: ComputeScorecardInput): Promise<Sc
       archivedP25Min: keyStop.archivedP25Min,
       archivedP75Min: keyStop.archivedP75Min,
       archivedBunchingRate: keyStop.archivedBunchingRate,
-      liveMedianMin: keyStop.liveMedianMin,
-      liveIQRMin: keyStop.liveIQRMin,
-      liveBunchingRate: keyStop.liveBunchingRate,
       reliabilityRatioArchived: keyStop.reliabilityRatioArchived,
-      reliabilityRatioLive: keyStop.reliabilityRatioLive,
       dataQualityFlags: keyStop.dataQualityFlags,
     });
   }
@@ -186,9 +177,45 @@ export async function computeScorecard(input: ComputeScorecardInput): Promise<Sc
 
   if (rows.length === 0) {
     console.warn(
-      `[computeScorecard] No rows generated. Scheduled headways: ${scheduledList.length}, Routes: ${routeIds.length}, Stops: ${stopIds.length}`
+      `[computeScorecard] No rows generated. Routes: ${routeIds.length}, Stops: ${stopIds.length}`
     );
   }
 
-  return rows;
+  // Build per-stop headways for map
+  const headwaysByStop: StopWithHeadways[] = stops.map((stop) => {
+    const routeHeadways: StopRouteHeadway[] = [];
+    for (const routeId of routeIds) {
+      const scheduled = scheduledByRouteStop.get(`${routeId}:${stop.stopId}`);
+      const archived = archivedMap.get(`${routeId}:${stop.stopId}`);
+
+      const gtfsScheduled = scheduled?.scheduledMedianHeadwayMinutes ?? 0;
+      const csvScheduled = archived?.csvScheduledHeadwayMinutes ?? null;
+      const effectiveScheduled = gtfsScheduled > 0
+        ? gtfsScheduled
+        : (csvScheduled ?? 0);
+
+      if (!archived) continue;
+
+      const reliabilityArchived = effectiveScheduled > 0 && archived
+        ? archived.observedMedianHeadwayMinutes / effectiveScheduled
+        : null;
+      const route = routeMap.get(routeId);
+      routeHeadways.push({
+        routeId,
+        routeShortName: route?.routeShortName ?? routeId,
+        scheduledMedianMin: effectiveScheduled,
+        archivedMedianMin: archived?.observedMedianHeadwayMinutes ?? null,
+        reliabilityRatioArchived: reliabilityArchived,
+        csvScheduledMedianMin: csvScheduled,
+        hasDelay:
+          reliabilityArchived != null && reliabilityArchived >= RELIABILITY_DELAY_THRESHOLD,
+      });
+    }
+    return {
+      ...stop,
+      routes: routeHeadways,
+    };
+  });
+
+  return { rows, headwaysByStop };
 }
