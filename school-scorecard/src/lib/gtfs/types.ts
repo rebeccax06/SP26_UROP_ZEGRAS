@@ -19,6 +19,17 @@ export interface GtfsTrip {
   route_id: string;
   trip_id: string;
   service_id: string;
+  /** Optional; present when shapes.txt is used */
+  shape_id?: string;
+  /** Optional; GTFS direction_id as string ("0" or "1") */
+  direction_id?: string;
+}
+
+export interface GtfsShapePoint {
+  shape_id: string;
+  shape_pt_lat: string;
+  shape_pt_lon: string;
+  shape_pt_sequence: string;
 }
 
 export interface GtfsStopTime {
@@ -56,4 +67,8 @@ export interface GtfsIndex {
   stopTimesByTrip: Map<string, GtfsStopTime[]>;
   calendar: Map<string, GtfsCalendar>;
   calendarDates: Map<string, GtfsCalendarDate[]>; // key: date (YYYYMMDD)
+  /** shape_id -> ordered array of shape points (when shapes.txt exists) */
+  shapes: Map<string, GtfsShapePoint[]>;
+  /** key "routeId|directionId" (directionId GTFS "0"/"1") -> shape_id for route overlay */
+  shapeIdByRouteDirection: Map<string, string>;
 }

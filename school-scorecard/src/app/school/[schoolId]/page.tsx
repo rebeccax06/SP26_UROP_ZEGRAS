@@ -4,8 +4,15 @@ import { useParams, useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import SchoolMap from '@/components/SchoolMap';
+import type { RouteOverlayColorBy } from '@/components/SchoolMap';
 import ScorecardTable from '@/components/ScorecardTable';
-import type { SchoolConfig, Route, RouteStopHeadway } from '@/lib/types';
+import type {
+  SchoolConfig,
+  Route,
+  RouteStopHeadway,
+  BusRidershipTripOption,
+  BusRidershipStopRow,
+} from '@/lib/types';
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -48,6 +55,16 @@ function hoursToLabel(h: number): string {
   return `${displayH}:${String(mm).padStart(2, '0')} ${period}`;
 }
 
+function formatRidershipTripStart(t: string): string {
+  const parts = t.split(':');
+  if (parts.length >= 2) return `${parts[0]}:${parts[1]?.padStart(2, '0')}`;
+  return t;
+}
+
+function formatRidershipTripLabel(t: BusRidershipTripOption): string {
+  return `${t.dayTypeName} · dir ${t.directionId} · ${formatRidershipTripStart(t.tripStartTime)}`;
+}
+
 export default function SchoolPage() {
   const params = useParams();
   const router = useRouter();
@@ -64,6 +81,13 @@ export default function SchoolPage() {
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
   const [showInbound, setShowInbound] = useState(true);
   const [showOutbound, setShowOutbound] = useState(true);
+  const [colorBy, setColorBy] = useState<RouteOverlayColorBy>('headway');
+  /** When colorBy is onTimeRate/bunchingRate: null = Overall, 0-23 = hour of day */
+  const [analysisHour, setAnalysisHour] = useState<number | null>(null);
+  /** Ridership CSV: index into `trips` from /api/bus-ridership */
+  const [ridershipTripIdx, setRidershipTripIdx] = useState<number | null>(null);
+  /** '' = all stops; otherwise stop_id from ridership CSV */
+  const [ridershipStopId, setRidershipStopId] = useState<string>('');
 
   // Debounced values — API only fires 400 ms after the user stops sliding
   const [debouncedDay, setDebouncedDay] = useState(selectedDay);
@@ -114,6 +138,15 @@ export default function SchoolPage() {
     setSelectedRouteId(null);
   }, [debouncedDay, debouncedStartHour, debouncedEndHour]);
 
+  useEffect(() => {
+    setRidershipTripIdx(null);
+    setRidershipStopId('');
+  }, [selectedRouteId]);
+
+  useEffect(() => {
+    setRidershipStopId('');
+  }, [ridershipTripIdx]);
+
   const scorecardUrl = useMemo(() => {
     if (typeof window === 'undefined') return null;
     const u = new URL('/api/scorecard', window.location.origin);
@@ -137,13 +170,64 @@ export default function SchoolPage() {
     u.searchParams.set('startTime', startTime);
     u.searchParams.set('endTime', endTime);
     u.searchParams.set('date', selectedDate);
+    if ((colorBy === 'onTimeRate' || colorBy === 'bunchingRate') && analysisHour !== null) {
+      u.searchParams.set('hour', String(analysisHour));
+    }
     return u.toString();
-  }, [selectedRouteId, startTime, endTime, selectedDate]);
+  }, [selectedRouteId, startTime, endTime, selectedDate, colorBy, analysisHour]);
 
-  const { data: routeOverlayData, isLoading: routeOverlayLoading } = useSWR<RouteStopHeadway[]>(
+  const { data: routeOverlayRaw, isLoading: routeOverlayLoading } = useSWR<{
+    stops: RouteStopHeadway[];
+    shapes?: Record<string, [number, number][]>;
+  }>(
     routeHeadwaysUrl,
     routeHeadwaysUrl ? fetcher : null
   );
+
+  const ridershipTripsUrl = useMemo(() => {
+    if (!selectedRouteId || typeof window === 'undefined') return null;
+    const u = new URL('/api/bus-ridership', window.location.origin);
+    u.searchParams.set('routeId', selectedRouteId);
+    return u.toString();
+  }, [selectedRouteId]);
+
+  const { data: ridershipMeta, isLoading: ridershipMetaLoading } = useSWR<{
+    csvPath: string | null;
+    seasonLabel: string | null;
+    trips: BusRidershipTripOption[];
+  }>(ridershipTripsUrl, ridershipTripsUrl ? fetcher : null);
+
+  const selectedRidershipTrip: BusRidershipTripOption | null =
+    ridershipMeta?.trips &&
+    ridershipTripIdx != null &&
+    ridershipTripIdx >= 0 &&
+    ridershipTripIdx < ridershipMeta.trips.length
+      ? ridershipMeta.trips[ridershipTripIdx]!
+      : null;
+
+  const ridershipStopsUrl = useMemo(() => {
+    if (!selectedRouteId || !selectedRidershipTrip || typeof window === 'undefined') return null;
+    const u = new URL('/api/bus-ridership', window.location.origin);
+    u.searchParams.set('routeId', selectedRouteId);
+    u.searchParams.set('dayTypeId', selectedRidershipTrip.dayTypeId);
+    u.searchParams.set('directionId', selectedRidershipTrip.directionId);
+    u.searchParams.set('tripStartTime', selectedRidershipTrip.tripStartTime);
+    u.searchParams.set('routeVariant', selectedRidershipTrip.routeVariant);
+    return u.toString();
+  }, [selectedRouteId, selectedRidershipTrip]);
+
+  const { data: ridershipStopsPayload, isLoading: ridershipStopsLoading } = useSWR<{
+    stops: BusRidershipStopRow[];
+  }>(ridershipStopsUrl, ridershipStopsUrl ? fetcher : null);
+
+  const ridershipStopsFiltered = useMemo(() => {
+    const list = ridershipStopsPayload?.stops ?? [];
+    if (!ridershipStopId) return list;
+    return list.filter((s) => s.stopId === ridershipStopId);
+  }, [ridershipStopsPayload?.stops, ridershipStopId]);
+
+  const routeOverlayData = routeOverlayRaw?.stops ?? null;
+  const routeShapes = routeOverlayRaw?.shapes ?? null;
 
   useEffect(() => {
     if (scorecardError) console.error('[SchoolPage] Scorecard error:', scorecardError);
@@ -178,6 +262,10 @@ export default function SchoolPage() {
   const selectedRoute = routes.find((r) => r.routeId === selectedRouteId);
   const selectedRouteName = selectedRoute
     ? `Route ${selectedRoute.routeShortName} — ${selectedRoute.routeLongName}`
+    : null;
+
+  const analysisTimeLabel = (colorBy === 'onTimeRate' || colorBy === 'bunchingRate')
+    ? (analysisHour === null ? 'Overall' : analysisHour < 12 ? `${analysisHour} AM` : analysisHour === 12 ? '12 PM' : `${analysisHour - 12} PM`)
     : null;
 
   const handleSchoolChange = useCallback(
@@ -359,6 +447,45 @@ export default function SchoolPage() {
           </label>
         </div>
 
+        {/* Color by + time of day (when a route is selected) */}
+        {selectedRouteName && (
+          <>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
+              <span style={{ color: '#6b7280' }}>Color by</span>
+              <select
+                value={colorBy}
+                onChange={(e) => setColorBy(e.target.value as RouteOverlayColorBy)}
+                style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #d1d5db', fontSize: 12 }}
+              >
+                <option value="headway">Headway (actual/scheduled)</option>
+                <option value="onTimeRate">On-time rate</option>
+                <option value="bunchingRate">Bunching rate</option>
+                <option value="load">Load (ridership, 0–30)</option>
+              </select>
+            </div>
+            {(colorBy === 'onTimeRate' || colorBy === 'bunchingRate') && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
+                <span style={{ color: '#6b7280' }}>Time</span>
+                <select
+                  value={analysisHour === null ? 'overall' : analysisHour}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setAnalysisHour(v === 'overall' ? null : parseInt(v, 10));
+                  }}
+                  style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #d1d5db', fontSize: 12 }}
+                >
+                  <option value="overall">Overall</option>
+                  {Array.from({ length: 15 }, (_, i) => i + 6).map((h) => (
+                    <option key={h} value={h}>
+                      {h < 12 ? `${h} AM` : h === 12 ? '12 PM' : `${h - 12} PM`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </>
+        )}
+
         {/* Active route badge */}
         {selectedRouteName && (
           <span style={{
@@ -377,6 +504,24 @@ export default function SchoolPage() {
             >✕</button>
           </span>
         )}
+
+        {/* On-time heatmap link */}
+        <a
+          href={`/route-heatmap?routeId=${encodeURIComponent(selectedRouteId ?? '28')}`}
+          style={{
+            padding: '5px 12px',
+            background: '#f0fdf4',
+            border: '1px solid #86efac',
+            borderRadius: 6,
+            fontSize: 12,
+            fontWeight: 600,
+            color: '#15803d',
+            textDecoration: 'none',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          On-time heatmap{selectedRouteId ? ` (Route ${selectedRouteId})` : ''}
+        </a>
       </header>
 
       <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
@@ -408,9 +553,11 @@ export default function SchoolPage() {
             schoolLon={school.lon}
             stops={mapStops}
             mapboxToken={mapboxToken}
-            routeIdsWithDelay={routeIdsWithDelay}
             routeOverlay={filteredRouteOverlay}
+            routeShapes={routeShapes}
             selectedRouteName={selectedRouteName}
+            colorBy={colorBy}
+            analysisTimeLabel={analysisTimeLabel}
           />
         </div>
 
@@ -442,6 +589,130 @@ export default function SchoolPage() {
                 selectedRouteId={selectedRouteId}
                 onRouteClick={handleRouteClick}
               />
+            )}
+
+            {selectedRouteId && (
+              <div style={{ marginTop: 18, paddingTop: 14, borderTop: '1px solid #e5e7eb' }}>
+                <h3 style={{ margin: '0 0 6px', fontSize: 13, fontWeight: 600 }}>
+                  Trip load (ridership CSV)
+                </h3>
+                <p style={{ margin: '0 0 10px', fontSize: 11, color: '#6b7280', lineHeight: 1.45 }}>
+                  Average passengers after boarding/alighting by trip start time and stop (MBTA
+                  ridership-by-trip file; not tied to the January 2026 reliability date above).
+                </p>
+                {ridershipMetaLoading && (
+                  <p style={{ fontSize: 12, color: '#6b7280' }}>Loading trip list…</p>
+                )}
+                {!ridershipMetaLoading && ridershipMeta && !ridershipMeta.csvPath && (
+                  <p style={{ fontSize: 12, color: '#92400e', background: '#fffbeb', padding: 8, borderRadius: 6 }}>
+                    Ridership file not found. Set <code style={{ fontSize: 11 }}>MBTA_BUS_RIDERSHIP_CSV</code> in{' '}
+                    <code style={{ fontSize: 11 }}>.env.local</code>, or place the CSV under{' '}
+                    <code style={{ fontSize: 11 }}>../data/MBTA_Bus_Ridership_by_Trip_Season_Route_Line_and_Stop/</code>{' '}
+                    next to this app.
+                  </p>
+                )}
+                {!ridershipMetaLoading && ridershipMeta?.csvPath && (
+                  <>
+                    {ridershipMeta.seasonLabel && (
+                      <p style={{ margin: '0 0 8px', fontSize: 11, color: '#374151' }}>
+                        Season: <strong>{ridershipMeta.seasonLabel}</strong> ·{' '}
+                        {ridershipMeta.trips.length} distinct trips
+                      </p>
+                    )}
+                    <label style={{ display: 'block', fontSize: 12, color: '#374151', marginBottom: 8 }}>
+                      <span style={{ display: 'block', marginBottom: 4, color: '#6b7280' }}>Trip</span>
+                      <select
+                        value={ridershipTripIdx === null ? '' : String(ridershipTripIdx)}
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          setRidershipTripIdx(v === '' ? null : parseInt(v, 10));
+                        }}
+                        style={{
+                          width: '100%',
+                          padding: '6px 8px',
+                          borderRadius: 6,
+                          border: '1px solid #d1d5db',
+                          fontSize: 12,
+                        }}
+                      >
+                        <option value="">Choose trip start…</option>
+                        {ridershipMeta.trips.map((t, i) => (
+                          <option key={`${t.dayTypeId}-${t.directionId}-${t.tripStartTime}-${t.routeVariant}-${i}`} value={i}>
+                            {formatRidershipTripLabel(t)}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    {selectedRidershipTrip && (
+                      <label style={{ display: 'block', fontSize: 12, color: '#374151', marginBottom: 8 }}>
+                        <span style={{ display: 'block', marginBottom: 4, color: '#6b7280' }}>Stop</span>
+                        <select
+                          value={ridershipStopId}
+                          onChange={(e) => setRidershipStopId(e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '6px 8px',
+                            borderRadius: 6,
+                            border: '1px solid #d1d5db',
+                            fontSize: 12,
+                          }}
+                        >
+                          <option value="">All stops on trip</option>
+                          {(ridershipStopsPayload?.stops ?? []).map((s) => (
+                            <option key={s.stopId} value={s.stopId}>
+                              #{s.stopSequence} — {s.stopName}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    )}
+                    {ridershipStopsLoading && selectedRidershipTrip && (
+                      <p style={{ fontSize: 12, color: '#6b7280' }}>Loading stop-level load…</p>
+                    )}
+                    {!ridershipStopsLoading && selectedRidershipTrip && ridershipStopsPayload && (
+                      <div style={{ overflowX: 'auto', maxHeight: 280, overflowY: 'auto', marginTop: 6 }}>
+                        <table style={{ width: '100%', fontSize: 11, borderCollapse: 'collapse' }}>
+                          <thead>
+                            <tr style={{ background: '#f9fafb', position: 'sticky', top: 0 }}>
+                              <th style={{ textAlign: 'left', padding: '6px 4px', borderBottom: '1px solid #e5e7eb' }}>#</th>
+                              <th style={{ textAlign: 'left', padding: '6px 4px', borderBottom: '1px solid #e5e7eb' }}>Stop</th>
+                              <th style={{ textAlign: 'right', padding: '6px 4px', borderBottom: '1px solid #e5e7eb' }}>Load</th>
+                              <th style={{ textAlign: 'right', padding: '6px 4px', borderBottom: '1px solid #e5e7eb' }}>On</th>
+                              <th style={{ textAlign: 'right', padding: '6px 4px', borderBottom: '1px solid #e5e7eb' }}>Off</th>
+                              <th style={{ textAlign: 'right', padding: '6px 4px', borderBottom: '1px solid #e5e7eb' }}>n</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {ridershipStopsFiltered.map((s) => (
+                              <tr key={`${s.stopId}-${s.stopSequence}`}>
+                                <td style={{ padding: '5px 4px', borderBottom: '1px solid #f3f4f6', color: '#6b7280' }}>
+                                  {s.stopSequence}
+                                </td>
+                                <td style={{ padding: '5px 4px', borderBottom: '1px solid #f3f4f6' }}>{s.stopName}</td>
+                                <td style={{ padding: '5px 4px', borderBottom: '1px solid #f3f4f6', textAlign: 'right', fontWeight: 600 }}>
+                                  {Number.isFinite(s.load) ? s.load.toFixed(1) : '—'}
+                                </td>
+                                <td style={{ padding: '5px 4px', borderBottom: '1px solid #f3f4f6', textAlign: 'right' }}>
+                                  {Number.isFinite(s.boardings) ? s.boardings.toFixed(1) : '—'}
+                                </td>
+                                <td style={{ padding: '5px 4px', borderBottom: '1px solid #f3f4f6', textAlign: 'right' }}>
+                                  {Number.isFinite(s.alightings) ? s.alightings.toFixed(1) : '—'}
+                                </td>
+                                <td style={{ padding: '5px 4px', borderBottom: '1px solid #f3f4f6', textAlign: 'right', color: '#6b7280' }}>
+                                  {s.sampleSize || '—'}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                        {ridershipStopsFiltered.length === 0 && (
+                          <p style={{ fontSize: 12, color: '#6b7280', marginTop: 8 }}>No rows for this trip.</p>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
             )}
           </div>
         </aside>

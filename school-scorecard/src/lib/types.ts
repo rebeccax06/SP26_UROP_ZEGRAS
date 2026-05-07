@@ -138,6 +138,12 @@ export interface RouteStopHeadway {
   /** actualMedianMin / scheduledMedianMin */
   ratio: number;
   sampleCount: number;
+  /** From data-analysis export; for segment coloring by on-time rate */
+  onTimeRate?: number | null;
+  /** From data-analysis export; for segment coloring by bunching rate */
+  bunchingRate?: number | null;
+  /** Mean Spring ridership CSV load at this stop×direction (weekday rows); map “Load” coloring */
+  ridershipLoad?: number | null;
 }
 
 export interface ScorecardApiResponse {
@@ -150,4 +156,23 @@ export interface ScorecardApiResponse {
   routes: Route[];
   /** Per-stop headways by route (for map popups). Only present when scorecard has data. */
   headwaysByStop?: StopWithHeadways[];
+}
+
+/** MBTA ridership-by-trip CSV: one bucket per distinct trip in the file. */
+export interface BusRidershipTripOption {
+  dayTypeId: string;
+  dayTypeName: string;
+  directionId: string;
+  tripStartTime: string;
+  routeVariant: string;
+}
+
+export interface BusRidershipStopRow {
+  stopSequence: number;
+  stopId: string;
+  stopName: string;
+  boardings: number;
+  alightings: number;
+  load: number;
+  sampleSize: number;
 }

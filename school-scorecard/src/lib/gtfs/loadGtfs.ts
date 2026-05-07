@@ -1,6 +1,6 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
-import type { GtfsIndex, GtfsStop, GtfsRoute, GtfsTrip, GtfsStopTime, GtfsCalendar, GtfsCalendarDate } from './types';
+import type { GtfsIndex, GtfsStop, GtfsRoute, GtfsTrip, GtfsStopTime, GtfsCalendar, GtfsCalendarDate, GtfsShapePoint } from './types';
 
 const DEBUG = process.env.DEBUG === 'true' || process.env.DEBUG === '1';
 
@@ -31,8 +31,9 @@ function resolveGtfsDir(): string {
 /**
  * Parse CSV line handling quoted fields with commas inside.
  * Simple implementation: split on commas but respect quoted fields.
+ * Used by GTFS loaders and MBTA bus arrival/departure heatmap readers.
  */
-function parseCsvLine(line: string): string[] {
+export function parseCsvLine(line: string): string[] {
   const result: string[] = [];
   let current = '';
   let inQuotes = false;
@@ -155,8 +156,12 @@ async function loadTrips(dir: string): Promise<{ byRoute: Map<string, GtfsTrip[]
     const route_id = values[headers.indexOf('route_id')] ?? '';
     const trip_id = values[headers.indexOf('trip_id')] ?? '';
     const service_id = values[headers.indexOf('service_id')] ?? '';
+    const shape_id = headers.includes('shape_id') ? (values[headers.indexOf('shape_id')] ?? '') : '';
+    const direction_id = headers.includes('direction_id') ? (values[headers.indexOf('direction_id')] ?? '') : '';
     if (!trip_id || !route_id) continue;
     const trip: GtfsTrip = { route_id, trip_id, service_id };
+    if (shape_id) trip.shape_id = shape_id;
+    if (direction_id !== undefined && direction_id !== '') trip.direction_id = direction_id;
     if (!byRoute.has(route_id)) byRoute.set(route_id, []);
     byRoute.get(route_id)!.push(trip);
     if (!byService.has(service_id)) byService.set(service_id, []);
@@ -274,6 +279,87 @@ async function loadCalendarDates(dir: string): Promise<Map<string, GtfsCalendarD
   return map;
 }
 
+async function loadShapes(dir: string): Promise<Map<string, GtfsShapePoint[]>> {
+  const path = join(dir, 'shapes.txt');
+  if (!existsSync(path)) {
+    if (DEBUG) console.warn('[GTFS] shapes.txt not found');
+    return new Map();
+  }
+  const { createReadStream } = await import('fs');
+  const { createInterface } = await import('readline');
+  const stream = createReadStream(path, { encoding: 'utf8' });
+  const rl = createInterface({ input: stream, crlfDelay: Infinity });
+  const byShapeId = new Map<string, GtfsShapePoint[]>();
+  let headers: string[] = [];
+  let first = true;
+  for await (const line of rl) {
+    const values = parseCsvLine(line);
+    if (first) {
+      headers = values;
+      first = false;
+      continue;
+    }
+    const shape_id = values[headers.indexOf('shape_id')] ?? '';
+    const shape_pt_lat = values[headers.indexOf('shape_pt_lat')] ?? '0';
+    const shape_pt_lon = values[headers.indexOf('shape_pt_lon')] ?? '0';
+    const shape_pt_sequence = values[headers.indexOf('shape_pt_sequence')] ?? '0';
+    if (!shape_id) continue;
+    const pt: GtfsShapePoint = { shape_id, shape_pt_lat, shape_pt_lon, shape_pt_sequence };
+    if (!byShapeId.has(shape_id)) byShapeId.set(shape_id, []);
+    byShapeId.get(shape_id)!.push(pt);
+  }
+  // Sort each shape's points by sequence
+  Array.from(byShapeId.values()).forEach((pts) => {
+    pts.sort((a, b) => parseInt(a.shape_pt_sequence, 10) - parseInt(b.shape_pt_sequence, 10));
+  });
+  if (DEBUG) console.log('[GTFS] Loaded', byShapeId.size, 'shapes');
+  return byShapeId;
+}
+
+/**
+ * For each (route, direction), pick the shape_id that the most trips use.
+ * Many MBTA routes have multiple shape variants per direction (full route,
+ * short-turns, garage pull-outs, etc.). Picking "first seen" is a crapshoot
+ * — for example route 28 inbound has 5 variants and the first-seen one is a
+ * 21-trip short-turn at Nubian Square that misses Ruggles entirely. The
+ * majority shape almost always corresponds to the canonical full route.
+ */
+function buildShapeIdByRouteDirection(tripsByRoute: Map<string, GtfsTrip[]>): Map<string, string> {
+  const out = new Map<string, string>();
+  Array.from(tripsByRoute.entries()).forEach(([routeId, trips]) => {
+    const counts = new Map<string, Map<string, number>>(); // direction → shapeId → count
+    for (const t of trips) {
+      if (!t.shape_id || t.direction_id === undefined || t.direction_id === '') continue;
+      let perDir = counts.get(t.direction_id);
+      if (!perDir) { perDir = new Map(); counts.set(t.direction_id, perDir); }
+      perDir.set(t.shape_id, (perDir.get(t.shape_id) ?? 0) + 1);
+    }
+    for (const [dir, perDir] of Array.from(counts.entries())) {
+      let bestShape = '';
+      let bestCount = -1;
+      for (const [sid, n] of Array.from(perDir.entries())) {
+        if (n > bestCount) { bestCount = n; bestShape = sid; }
+      }
+      if (bestShape) out.set(`${routeId}|${dir}`, bestShape);
+    }
+  });
+  return out;
+}
+
+/**
+ * Weekday 0=Sun … 6=Sat for an ISO calendar date (YYYY-MM-DD).
+ * Uses UTC date parts only so it matches GTFS `service_date` / MBTA CSV dates regardless of
+ * the runtime timezone (`new Date('2026-01-15').getDay()` is wrong in US zones).
+ */
+export function getWeekdaySun0ForIsoDate(dateStr: string): number {
+  const m = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return 0;
+  const y = parseInt(m[1]!, 10);
+  const mo = parseInt(m[2]!, 10) - 1;
+  const d = parseInt(m[3]!, 10);
+  return new Date(Date.UTC(y, mo, d)).getUTCDay();
+}
+
 /** Get service_ids that run on the given date (YYYY-MM-DD). */
 function getServiceIdsForDate(
   dateStr: string,
@@ -291,11 +377,7 @@ function getServiceIdsForDate(
       throw new Error(`Invalid date format: ${dateStr} (expected YYYY-MM-DD, got length ${dateStrNormalized.length})`);
     }
     
-    const dateObj = new Date(dateStr);
-    if (isNaN(dateObj.getTime())) {
-      throw new Error(`Invalid date: ${dateStr}`);
-    }
-    const dayOfWeek = dateObj.getDay(); // 0=Sun, 1=Mon, ...
+    const dayOfWeek = getWeekdaySun0ForIsoDate(dateStr); // 0=Sun, 1=Mon, ...
     const dowKeys = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
     const dow = dowKeys[dayOfWeek]!;
     const result = new Set<string>();
@@ -320,6 +402,30 @@ function getServiceIdsForDate(
 
 let cachedIndex: GtfsIndex | null = null;
 
+/** Lightweight cache for heatmap labels (only stops.txt). */
+let cachedStopIdToName: Map<string, string> | null = null;
+let cachedStopIdToNameDir: string | null = null;
+
+/**
+ * Load stop_id → stop_name from GTFS stops.txt (quoted-field aware).
+ * Same paths as loadGtfs: GTFS_DIR, then data/gtfs, then ../data/gtfs.
+ * Falls back to stop_id when name is missing.
+ */
+export async function loadGtfsStopIdToNameMap(gtfsDir?: string): Promise<Map<string, string>> {
+  const dir = gtfsDir ?? resolveGtfsDir();
+  if (cachedStopIdToName && cachedStopIdToNameDir === dir) {
+    return cachedStopIdToName;
+  }
+  const stops = await loadStops(dir);
+  const map = new Map<string, string>();
+  for (const [id, s] of Array.from(stops.entries())) {
+    map.set(id, (s.stop_name || '').trim() || id);
+  }
+  cachedStopIdToName = map;
+  cachedStopIdToNameDir = dir;
+  return map;
+}
+
 /**
  * Load GTFS from data/gtfs (or GTFS_DIR). Builds in-memory indexes.
  * Cached after first load.
@@ -331,7 +437,7 @@ export async function loadGtfs(gtfsDir?: string): Promise<GtfsIndex> {
     return cachedIndex;
   }
   if (DEBUG) console.log('[GTFS] Loading GTFS from', dir, 'cwd:', process.cwd());
-  const [stops, routes, { byRoute: tripsByRoute, byService: tripsByService }, stopTimesByTrip, calendar, calendarDates] =
+  const [stops, routes, { byRoute: tripsByRoute, byService: tripsByService }, stopTimesByTrip, calendar, calendarDates, shapes] =
     await Promise.all([
       loadStops(dir),
       loadRoutes(dir),
@@ -339,7 +445,9 @@ export async function loadGtfs(gtfsDir?: string): Promise<GtfsIndex> {
       loadStopTimes(dir),
       loadCalendar(dir),
       loadCalendarDates(dir),
+      loadShapes(dir),
     ]);
+  const shapeIdByRouteDirection = buildShapeIdByRouteDirection(tripsByRoute);
   cachedIndex = {
     stops,
     routes,
@@ -348,6 +456,8 @@ export async function loadGtfs(gtfsDir?: string): Promise<GtfsIndex> {
     stopTimesByTrip,
     calendar,
     calendarDates,
+    shapes,
+    shapeIdByRouteDirection,
   };
   return cachedIndex;
 }
@@ -369,4 +479,23 @@ export { parseTimeToMinutes };
 
 export function clearGtfsCache(): void {
   cachedIndex = null;
+  cachedStopIdToName = null;
+  cachedStopIdToNameDir = null;
+}
+
+/**
+ * Get shape geometry as [lon, lat][] for a route and GTFS direction_id ("0" or "1").
+ * Returns null if shapes.txt is missing or no shape exists for that route/direction.
+ */
+export function getShapeCoordinatesForRouteDirection(
+  index: GtfsIndex,
+  routeId: string,
+  directionId: string
+): [number, number][] | null {
+  const key = `${routeId}|${directionId}`;
+  const shapeId = index.shapeIdByRouteDirection.get(key);
+  if (!shapeId) return null;
+  const points = index.shapes.get(shapeId);
+  if (!points?.length) return null;
+  return points.map((p) => [parseFloat(p.shape_pt_lon), parseFloat(p.shape_pt_lat)]);
 }

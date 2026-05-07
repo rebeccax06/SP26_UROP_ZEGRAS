@@ -1,6 +1,5 @@
 import { createReadStream } from 'fs';
 import { createInterface } from 'readline';
-import { join } from 'path';
 
 /**
  * Simple streaming CSV parser: yields rows as string[].

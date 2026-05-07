@@ -120,10 +120,11 @@ export async function computeScorecard(input: ComputeScorecardInput): Promise<Co
       .map((stopId) => {
         const scheduled = scheduledByRouteStop.get(`${routeId}:${stopId}`);
         const archived = archivedMap.get(`${routeId}:${stopId}`);
+        const archivedStopLevel = archived && !archived.isRouteLevel ? archived : null;
 
         // Prefer GTFS scheduled headway; fall back to CSV computed from scheduled times
         const gtfsScheduled = scheduled?.scheduledMedianHeadwayMinutes ?? 0;
-        const csvScheduled = archived?.csvScheduledHeadwayMinutes ?? null;
+        const csvScheduled = archivedStopLevel?.csvScheduledHeadwayMinutes ?? null;
         const effectiveScheduled = gtfsScheduled > 0
           ? gtfsScheduled
           : (csvScheduled ?? 0);
@@ -131,21 +132,21 @@ export async function computeScorecard(input: ComputeScorecardInput): Promise<Co
         const flags: string[] = [];
         if (gtfsScheduled <= 0 && csvScheduled != null && csvScheduled > 0) flags.push('csv-scheduled');
         if (archived?.isRouteLevel) flags.push('archived-route-level');
-        if (!archived) flags.push('no-archived');
+        if (!archivedStopLevel) flags.push('no-archived');
 
         const reliabilityArchived =
-          effectiveScheduled > 0 && archived
-            ? archived.observedMedianHeadwayMinutes / effectiveScheduled
+          effectiveScheduled > 0 && archivedStopLevel
+            ? archivedStopLevel.observedMedianHeadwayMinutes / effectiveScheduled
             : null;
 
         return {
           keyStopId: stopId,
           keyStopName: stopMap.get(stopId)?.stopName,
           scheduledMedianMin: effectiveScheduled,
-          archivedMedianMin: archived?.observedMedianHeadwayMinutes ?? null,
-          archivedP25Min: archived?.headwayP25Minutes ?? null,
-          archivedP75Min: archived?.headwayP75Minutes ?? null,
-          archivedBunchingRate: archived?.bunchingRate ?? null,
+          archivedMedianMin: archivedStopLevel?.observedMedianHeadwayMinutes ?? null,
+          archivedP25Min: archivedStopLevel?.headwayP25Minutes ?? null,
+          archivedP75Min: archivedStopLevel?.headwayP75Minutes ?? null,
+          archivedBunchingRate: archivedStopLevel?.bunchingRate ?? null,
           reliabilityRatioArchived: reliabilityArchived,
           dataQualityFlags: flags,
         };
@@ -187,24 +188,25 @@ export async function computeScorecard(input: ComputeScorecardInput): Promise<Co
     for (const routeId of routeIds) {
       const scheduled = scheduledByRouteStop.get(`${routeId}:${stop.stopId}`);
       const archived = archivedMap.get(`${routeId}:${stop.stopId}`);
+      const archivedStopLevel = archived && !archived.isRouteLevel ? archived : null;
 
       const gtfsScheduled = scheduled?.scheduledMedianHeadwayMinutes ?? 0;
-      const csvScheduled = archived?.csvScheduledHeadwayMinutes ?? null;
+      const csvScheduled = archivedStopLevel?.csvScheduledHeadwayMinutes ?? null;
       const effectiveScheduled = gtfsScheduled > 0
         ? gtfsScheduled
         : (csvScheduled ?? 0);
 
-      if (!archived) continue;
+      if (!archivedStopLevel) continue;
 
-      const reliabilityArchived = effectiveScheduled > 0 && archived
-        ? archived.observedMedianHeadwayMinutes / effectiveScheduled
+      const reliabilityArchived = effectiveScheduled > 0 && archivedStopLevel
+        ? archivedStopLevel.observedMedianHeadwayMinutes / effectiveScheduled
         : null;
       const route = routeMap.get(routeId);
       routeHeadways.push({
         routeId,
         routeShortName: route?.routeShortName ?? routeId,
         scheduledMedianMin: effectiveScheduled,
-        archivedMedianMin: archived?.observedMedianHeadwayMinutes ?? null,
+        archivedMedianMin: archivedStopLevel?.observedMedianHeadwayMinutes ?? null,
         reliabilityRatioArchived: reliabilityArchived,
         csvScheduledMedianMin: csvScheduled,
         hasDelay:

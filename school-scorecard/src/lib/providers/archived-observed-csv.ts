@@ -27,8 +27,9 @@
  */
 
 import fs from 'fs';
-import path from 'path';
 import { createInterface } from 'readline';
+
+import { getMbtaBusArrivalCsvPath } from '@/lib/analysis/mbtaBusCsvPath';
 import type { ArchivedObservedProvider, ArchivedObservedOptions } from './archived-observed';
 import type { ArchivedObservedResult } from '@/lib/types';
 
@@ -42,6 +43,8 @@ interface HeadwayRecord {
   scheduledHeadwaySec: number;  // 0 if not available (first trip of day)
   actualHeadwaySec: number;
   localHour: number;
+  scheduledSec: number;
+  prevScheduledSec: number; // <=0 means no previous trip in that stop+direction+date sequence
   date: string;
   directionId: string;
   timePointOrder: number;
@@ -149,9 +152,9 @@ interface RawTripRecord {
 function loadIndex(): Promise<IndexResult> {
   if (indexPromise) return indexPromise;
   indexPromise = (async (): Promise<IndexResult> => {
-    const csvPath = path.join(process.cwd(), 'data/mbta-bus/MBTA-Bus-Arrival-Departure-Times_2026-01.csv');
-    if (!fs.existsSync(csvPath)) {
-      console.warn('[ArchivedCSV] CSV file not found at', csvPath);
+    const csvPath = getMbtaBusArrivalCsvPath();
+    if (!csvPath) {
+      console.warn('[ArchivedCSV] MBTA bus CSV not found (set MBTA_BUS_ARRIVAL_CSV or place file under data/mbta-bus/)');
       return { index: new Map(), dates: [] };
     }
 
@@ -280,6 +283,8 @@ function loadIndex(): Promise<IndexResult> {
           scheduledHeadwaySec,
           actualHeadwaySec,
           localHour: trip.localHour,
+          scheduledSec: trip.scheduledSec,
+          prevScheduledSec: i > 0 ? trips[i - 1]!.scheduledSec : -1,
           date: trip.date,
           directionId: trip.directionId,
           timePointOrder: trip.timePointOrder,
@@ -343,6 +348,11 @@ export function createArchivedObservedProviderCSV(): ArchivedObservedProvider {
       const inWindow = (r: HeadwayRecord) => {
         const d = dateToNum(r.date);
         if (d < startNum || d > endNum || r.localHour < startH || r.localHour >= endH) return false;
+        // Headway is a gap between two consecutive trips. Keep it only when BOTH
+        // the current and previous trips are inside the selected window.
+        if (r.prevScheduledSec <= 0) return false;
+        const prevHour = r.prevScheduledSec / 3600;
+        if (prevHour < startH || prevHour >= endH) return false;
         if (dirSet && !dirSet.has(r.directionId)) return false;
         return true;
       };
@@ -350,11 +360,7 @@ export function createArchivedObservedProviderCSV(): ArchivedObservedProvider {
       function getFiltered(key: string): HeadwayRecord[] | null {
         const records = index.get(key);
         if (!records?.length) return null;
-        let result = records.filter(inWindow);
-        // Fallback: ignore date filter but keep time window
-        if (result.length === 0) {
-          result = records.filter((r) => r.localHour >= startH && r.localHour < endH);
-        }
+        const result = records.filter(inWindow);
         return result.length > 0 ? result : null;
       }
 
@@ -441,6 +447,10 @@ export async function getRouteStopHeadways(
   const inWindow = (r: HeadwayRecord) => {
     const d = dateToNum(r.date);
     if (d < startNum || d > endNum || r.localHour < startH || r.localHour >= endH) return false;
+    // Enforce strict window membership for the previous trip too.
+    if (r.prevScheduledSec <= 0) return false;
+    const prevHour = r.prevScheduledSec / 3600;
+    if (prevHour < startH || prevHour >= endH) return false;
     if (dirSet && !dirSet.has(r.directionId)) return false;
     return true;
   };
@@ -453,11 +463,7 @@ export async function getRouteStopHeadways(
     const records = index.get(key)!;
     const stopId = key.slice(prefix.length);
 
-    let filtered = records.filter(inWindow);
-    // Fallback: use all records in time window if no date-filtered data
-    if (filtered.length === 0 && filterDate) {
-      filtered = records.filter((r) => r.localHour >= startH && r.localHour < endH);
-    }
+    const filtered = records.filter(inWindow);
     if (filtered.length === 0) continue;
 
     const scheduledSecs = filtered
