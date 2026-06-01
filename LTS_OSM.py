@@ -1,133 +1,123 @@
 '''
-Level of Traffic Stress maps with Open Street Map
+Level of Traffic Stress maps with OpenStreetMap.
 
-This calculates Level of Traffic Stress from Open Street Map data. It uses 
-the [osmnx](https://osmnx.readthedocs.io/en/stable/) Python package to download a street network.
+This pipeline downloads OSM data via Overpass + OSMnx, then computes
+edge-level (and optionally node-level) cycling Level of Traffic Stress
+using the rules defined in `lts_functions.py` and `config/*.yml`.
 
-Each function that saves a file will check if it already exists. If a file does not exist, 
-subsequent files will also be overwritten. This means to rerun from a given point, you can
-just delete the file that is created at that stage. Files are numbered in the folder in order
-of generation.
+Every stage saves an intermediate file under `data/`. Re-running from a
+given stage is as simple as deleting that file and any later ones —
+each stage checks for its output and skips if found (unless `OVERWRITE`
+is enabled). The numeric prefix in each filename encodes pipeline order.
 '''
 
 import json
-# import yaml
 import os
-from pathlib import Path
 from collections import defaultdict
-# import datetime
-
-import requests
-
-import numpy as np
-import pandas as pd
-from pandas.api.types import CategoricalDtype
-
+from pathlib import Path
 
 import geopandas as gpd
+import numpy as np
 import osmnx as ox
-import networkx as nx
-
-# import matplotlib
-# from matplotlib import pyplot as plt
-# from mpl_toolkits.axes_grid1 import make_axes_locatable
-
+import pandas as pd
+import requests
+from pandas.api.types import CategoricalDtype
 from tqdm import tqdm
 
 import lts_functions as lts
 
-ox.settings.use_cache = False 
-# Cache built up deleted ways (un-separated cycleways). When rebuilding, don't want to keep old 
-# data on accident. Unless explicitly called for (or data deleted), most processing is done on saved
-# data anyway.
+# Disable osmnx HTTP cache: when rebuilding we never want stale ways
+# (e.g. un-separated cycleways) bleeding into the new run.
+ox.settings.use_cache = False
 
 dataFolder = 'data'
 queryFolder = 'query'
 
 overpass_url = "http://overpass-api.de/api/interpreter"
 
+# Module-global re-run flag. Set to True when an earlier stage regenerated
+# its output, so every later stage is forced to re-run too.
 OVERWRITE = False
-
-# %% Functions
-def check_files(region):
-    # WIP: plan to better check what files exist and skip steps without unessesary file loads
-    
-    fileList = {
-        'queryFile': Path('query') / (region + '.query'),
-        'osmjsonFile': '',
-        'waytagsFile': '',
-        'graphFile': '',
-        'allLtsFile': '',
-        'gdfNodeFile': '',
-        'ltsGraphFile': '',
-    }
-
-    for file in fileList:
-        pass
-    
 
 
 def build_query(region, key, value):
+    '''
+    Write an Overpass QL query file for `region` into `query/{region}.query`.
+
+    Looks up the OSM relation matching `key=value` (typically
+    `wikipedia=en:Boston`), then selects every highway way except sidewalks
+    and parking aisles, plus any sidewalk that explicitly permits bicycles.
+    Idempotent: skips if the query file already exists.
+    '''
     global OVERWRITE
     filepath = Path('query') / (region + '.query')
     filepath.parent.mkdir(exist_ok=True)
     if filepath.exists():
         print(f"{region} query already exists")
-    else:
-        OVERWRITE = True
-        with filepath.open(mode='w') as f:
-            f.write('[timeout:600][out:json][maxsize:2000000000];\n')
-            f.write(f'area["{key}"="{value}"]->.search_area;\n')
-            f.write('.search_area out body;\n')
-            f.write("""
+        return
+    OVERWRITE = True
+    with filepath.open(mode='w') as f:
+        f.write('[timeout:600][out:json][maxsize:2000000000];\n')
+        f.write(f'area["{key}"="{value}"]->.search_area;\n')
+        f.write('.search_area out body;\n')
+        f.write("""
 (
     way[highway][footway!=sidewalk][service!=parking_aisle](area.search_area);
     way[footway=sidewalk][bicycle][bicycle!=no][bicycle!=dismount](area.search_area);
 );
 out;
             """)
-        print(f'{filepath} created')
+    print(f'{filepath} created')
+
 
 def download_osm(region):
     '''
+    Run the Overpass query for `region` and save the raw JSON response.
 
-    https://towardsdatascience.com/loading-data-from-openstreetmap-with-python-and-the-overpass-api-513882a27fd0
+    Output: `data/{region}_1.json`. Skips if the file already exists and
+    `OVERWRITE` is False.
+
+    Ref: https://towardsdatascience.com/loading-data-from-openstreetmap-with-python-and-the-overpass-api-513882a27fd0
     '''
     global OVERWRITE
     queryFilepath = os.path.join(queryFolder, f'{region}.query')
     dataFilepath = os.path.join(dataFolder, f'{region}_1.json')
 
-    if os.path.exists(dataFilepath) and (OVERWRITE is False):
+    if os.path.exists(dataFilepath) and not OVERWRITE:
         print(f'OSM data already downloaded for {region}')
-    else:
-        OVERWRITE = True
-        with open(queryFilepath, 'r') as f:
-            lines = f.readlines()
-        overpass_query = ''.join(lines)
-        # print(overpass_query)
+        return
 
-        print(f'Downloaing OSM map data for {region}...')
-        response = requests.get(overpass_url,
-                                params={'data': overpass_query},
-                                timeout=60*5)
-        response.raise_for_status() # Raise error if status code not 200
-        data = response.json()
+    OVERWRITE = True
+    with open(queryFilepath, 'r') as f:
+        overpass_query = f.read()
 
-        print(f'\tDownloaded OSM map data for {region}')
+    print(f'Downloading OSM map data for {region}...')
+    response = requests.get(
+        overpass_url,
+        params={'data': overpass_query},
+        timeout=60 * 5,
+    )
+    response.raise_for_status()
+    data = response.json()
 
-        with open(dataFilepath, 'w') as f:
-            json.dump(data, f)
-            print(f'Saved {region} map data')
+    print(f'\tDownloaded OSM map data for {region}')
+
+    with open(dataFilepath, 'w') as f:
+        json.dump(data, f)
+        print(f'Saved {region} map data')
 
 def extract_tags(region):
     '''
-    Extract OSM tags to use in download
+    Find every unique OSM tag on a way in `data/{region}_1.json` and register
+    them with osmnx so they survive the graph download.
+
+    Caches the tag list to `data/{region}_2_way_tags.csv`. Mutates the global
+    `ox.settings.useful_tags_way` and `ox.settings.osm_xml_way_tags`.
     '''
     global OVERWRITE
-    # load the data
     wayTagsCSV = os.path.join(dataFolder, f'{region}_2_way_tags.csv')
 
-    if os.path.exists(wayTagsCSV) and (OVERWRITE is False):
+    if os.path.exists(wayTagsCSV) and not OVERWRITE:
         way_tags_series = pd.read_csv(wayTagsCSV, index_col=0)['tag']
         print(f'Read {wayTagsCSV}')
     else:
@@ -136,33 +126,23 @@ def extract_tags(region):
         with open(os.path.join(dataFolder, f'{region}_1.json'), 'r') as f:
             data = json.load(f)
 
-        # make a dataframe of tags
-        dfs = []
-
-        for element in data['elements']:
-            if element['type'] != 'way':
-                continue
-            df = pd.DataFrame.from_dict(element['tags'], orient = 'index')
-            dfs.append(df)
-
+        dfs = [
+            pd.DataFrame.from_dict(element['tags'], orient='index')
+            for element in data['elements']
+            if element['type'] == 'way'
+        ]
         tags_df = pd.concat(dfs).reset_index()
         tags_df.columns = ["tag", "tagvalue"]
-
-        # count all the unique tag and value combinations
-        # tag_value_counts = tags_df.value_counts().reset_index()
-        # count all the unique tags
         tag_counts = tags_df['tag'].value_counts().reset_index()
 
-        # explore the tags that start with 'cycleway'
         print(f"Cycleway tags:\n{tag_counts[tag_counts['tag'].str.contains('cycleway')]}")
 
-        way_tags_series = tag_counts['tag'] # all unique tags from the OSM download
+        way_tags_series = tag_counts['tag']
         way_tags_series.to_csv(wayTagsCSV)
         print(f'\t{wayTagsCSV} saved.')
 
     way_tags = list(way_tags_series)
 
-    # add the above list to the global osmnx settings
     ox.settings.useful_tags_way += way_tags
     ox.settings.osm_xml_way_tags = way_tags
     print('Way tags added to osmnx settings.')
@@ -170,23 +150,25 @@ def extract_tags(region):
 
 def download_data(region):
     '''
-    Download data for a given region
+    Download (or load cached) OSM street network for `region` and return its
+    node/edge GeoDataFrames.
+
+    The filter is adapted from osmnx's built-in "bike" filter (keeps footways
+    and construction tags so cycling-relevant geometry is retained). Output
+    graph is saved to `data/{region}_3.graphml`.
     '''
     global OVERWRITE
-    # create a filter to download selected data
-    # this filter is based on osmfilter = ox.downloader._get_osm_filter("bike")
-    # keeping the footway and construction tags
-    osmfilter = ('["highway"]["area"!~"yes"]["access"!~"private"]'
-                '["highway"!~"abandoned|bus_guideway|corridor|elevator|escalator|motor|'
-                'planned|platform|proposed|raceway|steps"]'
-                '["service"!~"private"]'
-                '["indoor"!~"yes"]'
-                '["service"!="parking_aisle"]')
+    osmfilter = (
+        '["highway"]["area"!~"yes"]["access"!~"private"]'
+        '["highway"!~"abandoned|bus_guideway|corridor|elevator|escalator|motor|'
+        'planned|platform|proposed|raceway|steps"]'
+        '["service"!~"private"]'
+        '["indoor"!~"yes"]'
+        '["service"!="parking_aisle"]'
+    )
 
-    # check if data has already been downloaded; if not, download
     filepath = f"{dataFolder}/{region}_3.graphml"
-    if os.path.exists(filepath) and (OVERWRITE is False):
-        # load graph
+    if os.path.exists(filepath) and not OVERWRITE:
         print(f"Loading saved graph for {region}")
         G = ox.load_graphml(filepath)
     else:
@@ -202,11 +184,6 @@ def download_data(region):
         print(f"Saving {region} graph")
         ox.save_graphml(G, filepath)
 
-        # plot downloaded graph - this is slow for a large area
-        # fig, ax = ox.plot_graph(G, node_size=0, edge_color="w", edge_linewidth=0.2)
-        # ox.plot_graph(G, node_size=0, edge_color="w", edge_linewidth=0.2)
-
-    # convert graph to node and edge GeoPandas GeoDataFrames
     gdf_nodes, gdf_edges = ox.graph_to_gdfs(G)
 
     print(f'{gdf_edges.shape=}')
@@ -215,7 +192,13 @@ def download_data(region):
     return gdf_nodes, gdf_edges
 
 def read_lts_csv(filepath):
+    '''
+    Load `data/{region}_4_all_lts.csv` back into a GeoDataFrame.
 
+    Only the columns listed in `loadCols` are read (the full CSV is wide).
+    The geometry column is parsed from WKT. If `(u, v, key)` are present the
+    GeoDataFrame is set to that MultiIndex to match osmnx conventions.
+    '''
     loadCols = ['u','v','key', 'osmid', 'geometry', 'access_aisle', 'access:conditional', 
             'access:disabled', 'access', 'aeroway', 'alt_name', 'area:highway', 
             'area', 'barrier', 'bicycle', 'bridge:movable', 'bridge:name', 
@@ -296,208 +279,197 @@ def read_lts_csv(filepath):
             'LTS_bikelane_yesparking_rev', 'LTS_bike_access_rev', 'LTS_rev',
             'LTS_separation_fwd', 'LTS_separation_rev'
             ]
-    
-    dtypeDict = {'u': 'Int64',
-                 'v': 'Int64',
-                 'key': 'Int32',
-                #  'level': 'float32',
-                 'level': 'object',
-                 'osmid': 'Int64',
-                #  'lanes': 'Int32',
-                #  'lanes:forward': 'Int32',
-                #  'lanes:backward': 'Int32',
-                 'lanes': 'object',
-                 'lanes:forward': 'object',
-                 'lanes:backward': 'object',
-                 'layer': 'Float32',
-                 'oneway': 'bool',
-                 'geometry': 'object',
-                }
-    
-    dtypes = defaultdict(CategoricalDtype, dtypeDict)
-    df = pd.read_csv(filepath, usecols=lambda x: x in loadCols, 
-                    dtype=dtypes, 
-                    keep_default_na=True, na_values="''",
-                    low_memory=False)
 
-    # convert to a geodataframe for plotting
+    dtypeDict = {
+        'u': 'Int64',
+        'v': 'Int64',
+        'key': 'Int32',
+        'level': 'object',
+        'osmid': 'Int64',
+        'lanes': 'object',
+        'lanes:forward': 'object',
+        'lanes:backward': 'object',
+        'layer': 'Float32',
+        'oneway': 'bool',
+        'geometry': 'object',
+    }
+
+    dtypes = defaultdict(CategoricalDtype, dtypeDict)
+    df = pd.read_csv(
+        filepath,
+        usecols=lambda x: x in loadCols,
+        dtype=dtypes,
+        keep_default_na=True,
+        na_values="''",
+        low_memory=False,
+    )
+
     geodf = gpd.GeoDataFrame(
         df.loc[:, [c for c in df.columns if c != "geometry"]],
         geometry=gpd.GeoSeries.from_wkt(df["geometry"]),
-        crs='wgs84') # projection from graph
+        crs='wgs84',
+    )
 
-    # Make some geo dataframes have the right index
-    geoIndex = ['u','v','key']
+    geoIndex = ['u', 'v', 'key']
     if set(geoIndex).issubset(geodf.columns):
         geodf.set_index(geoIndex, inplace=True)
 
     return geodf
 
+
 def read_gdf_nodes_csv(filepath):
+    '''Load a node-level LTS CSV produced by `lts_nodes` back into a GeoDataFrame.'''
+    dtypeDict = {
+        'x': 'float64',
+        'y': 'float64',
+        'osmid': 'Int64',
+        'street_count': 'Int32',
+        'highway': 'category',
+        'ref': 'category',
+        'geometry': 'object',
+        'LTS': 'Int32',
+        'message': 'category',
+    }
 
-    dtypeDict = {'x': 'float64',
-                 'y': 'float64',
-                 'osmid': 'Int64',
-                 'street_count': 'Int32',
-                 'highway': 'category',
-                 'ref': 'category',
-                 'geometry': 'object',
-                 'LTS': 'Int32',
-                 'message': 'category',                 
-                }
-    
-    df = pd.read_csv(filepath, dtype=dtypeDict, 
-                     keep_default_na=True, na_values="''",
-                     low_memory=False)
+    df = pd.read_csv(
+        filepath,
+        dtype=dtypeDict,
+        keep_default_na=True,
+        na_values="''",
+        low_memory=False,
+    )
 
-    # convert to a geodataframe for plotting
     geodf = gpd.GeoDataFrame(
         df.loc[:, [c for c in df.columns if c != "geometry"]],
         geometry=gpd.GeoSeries.from_wkt(df["geometry"]),
-        crs='wgs84') # projection from graph
+        crs='wgs84',
+    )
 
     return geodf
 
+
 def lts_edges(region, gdf_edges):
     '''
-    Calculate the LTS for all edges
+    Compute LTS for every edge in `gdf_edges` and write `data/{region}_4_all_lts.csv`.
+
+    Returns the resulting GeoDataFrame (loaded from cache when available).
+    Each step is delegated to `lts_functions`; see that module for the
+    rule-by-rule docstrings.
     '''
     global OVERWRITE
     filepathAll = f"{dataFolder}/{region}_4_all_lts.csv"
 
-    if os.path.exists(filepathAll) and (OVERWRITE is False):
-        # load graph
+    if os.path.exists(filepathAll) and not OVERWRITE:
         print(f"Loading LTS for {region}")
-        all_lts = read_lts_csv(filepathAll)
-        # print(f'{all_lts['LTS'].unique()=}')
-    else:
-        OVERWRITE = True
+        return read_lts_csv(filepathAll)
 
-        # Load the configuration files to caluclate ratings
-        rating_dict = lts.read_rating()
-        tables = lts.read_tables()
+    OVERWRITE = True
 
-        # Process features where side is more important than direction
-        gdf_edges = lts.parking_present(gdf_edges, rating_dict)
+    rating_dict = lts.read_rating()
+    tables = lts.read_tables()
 
-        # Convert schema to focus on direction
-        gdf_edges = lts.convert_both_tag(gdf_edges)
+    # Side-of-street features (parking) feed everything downstream.
+    gdf_edges = lts.parking_present(gdf_edges, rating_dict)
+    # Collapse `*:both` tags into `*:left`/`*:right`.
+    gdf_edges = lts.convert_both_tag(gdf_edges)
+    # Bike lane + direction parsing.
+    gdf_edges = lts.parse_lanes(gdf_edges)
+    # Non-directional features.
+    gdf_edges = lts.get_prevailing_speed(gdf_edges, rating_dict)
+    gdf_edges = lts.get_lanes(gdf_edges, default_lanes=2)
+    gdf_edges = lts.get_centerlines(gdf_edges, rating_dict)
+    gdf_edges = lts.width_ft(gdf_edges)
+    gdf_edges = lts.define_narrow_wide(gdf_edges)
+    gdf_edges = lts.define_adt(gdf_edges, rating_dict)
+    gdf_edges = lts.LTS_separation(gdf_edges)
 
-        # Process bike lanes
-        gdf_edges = lts.parse_lanes(gdf_edges)
+    lts.column_value_counts(gdf_edges)  # debug log
+    all_lts = lts.calculate_lts(gdf_edges, tables)
+    gdf_edges = lts.define_zoom(gdf_edges, rating_dict)
 
-        # Process non-directional data
-        gdf_edges = lts.get_prevailing_speed(gdf_edges, rating_dict)
-        gdf_edges = lts.get_lanes(gdf_edges, default_lanes=2)
-        gdf_edges = lts.get_centerlines(gdf_edges, rating_dict)
-
-        gdf_edges = lts.width_ft(gdf_edges)
-        
-        gdf_edges = lts.define_narrow_wide(gdf_edges)
-        gdf_edges = lts.define_adt(gdf_edges, rating_dict)
-
-        gdf_edges = lts.LTS_separation(gdf_edges)
-
-        lts.column_value_counts(gdf_edges) # Useful for debugging
-        all_lts = lts.calculate_lts(gdf_edges, tables)
-
-        gdf_edges = lts.define_zoom(gdf_edges, rating_dict)
-
-        # print(f'{all_lts['LTS'].unique()=}')
-        
-        # print(f'Saving LTS for {region}')
-        all_lts.to_csv(filepathAll)
-        # https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.to_file.html
-
+    all_lts.to_csv(filepathAll)
     return all_lts
 
 
 def lts_nodes(region, gdf_nodes, all_lts):
     '''
-    Calculate node LTS.
+    Compute intersection (node) LTS from edge LTS + traffic control type.
 
-    - An intersection without either was assigned the highest LTS of its intersecting roads.
-    - Stop signs reduced an otherwise LTS2 intersection to LTS1.
-    - A signalized intersection of two lowstress links was assigned LTS1.
-    - Assigned LTS2 to signalized intersections where a low-stress (LTS1/ 2) link crosses a 
-        high-stress (LTS3/4) link.
+    Rules (matching the Bonsma-Fisher node-LTS extension):
+    - Default: node LTS = max LTS of intersecting edges.
+    - Stop sign on an LTS≤2 node drops it to 1.
+    - Traffic signal on an LTS≤2 node drops it to 1.
+    - Traffic signal on an LTS≥3 node drops it to 2.
+
+    Saves `data/{region}_6_gdf_nodes.csv`. Heavy: iterates every node.
     '''
     global OVERWRITE
     filepath = f"{dataFolder}/{region}_6_gdf_nodes.csv"
 
-    if os.path.exists(filepath) & (OVERWRITE is False):
+    if os.path.exists(filepath) and not OVERWRITE:
         print(f'Loading {filepath}')
         gdf_nodes = read_gdf_nodes_csv(filepath)
         gdf_nodes.set_index('osmid', inplace=True)
+        return gdf_nodes
 
-    else:
-        OVERWRITE = True
-        gdf_nodes['highway'].value_counts()
+    OVERWRITE = True
+    gdf_nodes['LTS'] = np.nan
+    gdf_nodes['message'] = ''
 
-        gdf_nodes['LTS'] = np.nan # make lts column
-        gdf_nodes['message'] = '' # make message column
+    for node in tqdm(gdf_nodes.index):
+        try:
+            edges = all_lts.loc[node]
+        except KeyError:
+            gdf_nodes.loc[node, 'message'] = "Node not found in edges"
+            continue
 
-        for node in tqdm(gdf_nodes.index):
-            # pylint: disable=bare-except
-            try:
-                edges = all_lts.loc[node]
-            except Exception as _:
-                #print("Node not found in edges: %s" %node)
-                gdf_nodes.loc[node, 'message'] = "Node not found in edges"
-                continue
-            # pylint: enable=bare-except
-            control = gdf_nodes.loc[node,'highway'] # if there is a traffic control
-            max_lts = edges['LTS'].astype(float).dropna().max(skipna=True, numeric_only=True)
-            if np.isnan(max_lts):
-                max_lts = 0
-            node_lts = int(max_lts) # set to max of intersecting roads
-            message = "Node LTS is max intersecting LTS"
-            if node_lts > 2:
-                if control == 'traffic_signals':
-                    node_lts = 2
-                    message = "LTS 3-4 with traffic signals"
-            elif node_lts <= 2:
-                if control == 'traffic_signals' or control == 'stop':
-                    node_lts = 1
-                    message = "LTS 1-2 with traffic signals or stop"
+        control = gdf_nodes.loc[node, 'highway']
+        max_lts = edges['LTS'].astype(float).dropna().max(skipna=True, numeric_only=True)
+        if np.isnan(max_lts):
+            max_lts = 0
+        node_lts = int(max_lts)
+        message = "Node LTS is max intersecting LTS"
 
-            gdf_nodes.loc[node,'message'] = message
-            gdf_nodes.loc[node,'LTS'] = node_lts # assign node lts
+        if node_lts > 2 and control == 'traffic_signals':
+            node_lts = 2
+            message = "LTS 3-4 with traffic signals"
+        elif node_lts <= 2 and control in ('traffic_signals', 'stop'):
+            node_lts = 1
+            message = "LTS 1-2 with traffic signals or stop"
 
-        gdf_nodes.to_csv(filepath)
-        print(f'Saved LTS nodes for {region}')
+        gdf_nodes.loc[node, 'message'] = message
+        gdf_nodes.loc[node, 'LTS'] = node_lts
 
+    gdf_nodes.to_csv(filepath)
+    print(f'Saved LTS nodes for {region}')
     return gdf_nodes
 
+
 def combine_data(fullRegion, regionList):
+    '''
+    Concatenate per-city edge LTS CSVs into a single
+    `data/{fullRegion}_4_all_lts.csv` for region-wide rendering.
+    '''
+    print('All LTS - 4')
+    combinedPath = f'{dataFolder}/{fullRegion}_4_all_lts.csv'
+    allLTS = pd.DataFrame()
+    for region in regionList:
+        print(f'\t{region}')
+        print(f'\t\tBefore: {allLTS.shape=}')
+        allLTS = pd.concat([allLTS, read_lts_csv(f'{dataFolder}/{region}_4_all_lts.csv')])
+        print(f'\t\tAfter:  {allLTS.shape=}')
+    allLTS.to_csv(combinedPath)
 
-    def combine_all_lts(fullRegion, regionList):
-        print('All LTS - 4')
-        allLTSpathCombined = f'{dataFolder}/{fullRegion}_4_all_lts.csv'
-        allLTS = pd.DataFrame()
-        for region in regionList:
-            print(f'\t{region}')
-            print(f'\t\tBefore: {allLTS.shape=}')
-            allLTSpath = f'{dataFolder}/{region}_4_all_lts.csv'
-            allLTS = pd.concat([allLTS, read_lts_csv(allLTSpath)])
-            print(f'\t\tAfter:  {allLTS.shape=}')
-        allLTS.to_csv(allLTSpathCombined)
 
-    def combine_gdf_nodes(fullRegion, regionList):
-        print('GDF Nodes - 6')
-        gdfNodesPathCombined = f'{dataFolder}/{fullRegion}_6_gdf_nodes.csv'
-        gdfNodes = pd.DataFrame()
-        for region in regionList:
-            print(f'\t{region}')
-            gdfNodesPath = f'{dataFolder}/{region}_6_gdf_nodes.csv'
-            gdfNodes = pd.concat([gdfNodes, pd.read_csv(gdfNodesPath, index_col=0)])
-        gdfNodes.to_csv(gdfNodesPathCombined)
-
-    combine_all_lts(fullRegion, regionList)
-    # combine_gdf_nodes(fullRegion, regionList)
-
-# %% Run as Script
 def main(region, key, value, rebuild=False):
+    '''
+    Run the full pipeline for one region:
+    build_query → download_osm → extract_tags → download_data → lts_edges.
+
+    `rebuild=True` forces every stage to re-run, even if intermediate files
+    already exist. `lts_nodes` is intentionally not called here; it's slow
+    and downstream consumers currently only need edge LTS.
+    '''
     global OVERWRITE
     OVERWRITE = rebuild
     Path(dataFolder).mkdir(exist_ok=True)
@@ -505,12 +477,10 @@ def main(region, key, value, rebuild=False):
     build_query(region, key, value)
     download_osm(region)
     extract_tags(region)
-    gdfNodes, gdfEdges = download_data(region)
-    all_lts = lts_edges(region, gdfEdges)
-    # gdf_nodes = lts_nodes(region, gdfNodes, all_lts) # Not using this yet/atm.
+    _gdf_nodes, gdf_edges = download_data(region)
+    lts_edges(region, gdf_edges)
+
 
 if __name__ == '__main__':
-    # city = ['Cambridge', 'wikipedia', 'en:Cambridge, Massachusetts']
     city = ['Boston', 'wikipedia', 'en:Boston']
-
     main(*city, True)

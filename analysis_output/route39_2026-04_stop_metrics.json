@@ -1,0 +1,3506 @@
+{
+  "overall": [
+    {
+      "stop_id": "10642",
+      "direction_id": "Inbound",
+      "time_point_order": 1,
+      "on_time_rate": 0.7673335294694518,
+      "bunching_rate": 0.09858197358197358,
+      "n_obs": 2850
+    },
+    {
+      "stop_id": "10642",
+      "direction_id": "Outbound",
+      "time_point_order": 6,
+      "on_time_rate": 0.3504464285714286,
+      "bunching_rate": 0.17585858585858585,
+      "n_obs": 2699
+    },
+    {
+      "stop_id": "11131",
+      "direction_id": "Inbound",
+      "time_point_order": 3,
+      "on_time_rate": 0.608591584782061,
+      "bunching_rate": 0.1308151294498382,
+      "n_obs": 2885
+    },
+    {
+      "stop_id": "1128",
+      "direction_id": "Inbound",
+      "time_point_order": 1,
+      "on_time_rate": 0.6842032967032967,
+      "bunching_rate": 0.0996135873472322,
+      "n_obs": 2892
+    },
+    {
+      "stop_id": "11388",
+      "direction_id": "Outbound",
+      "time_point_order": 1,
+      "on_time_rate": 0.5638297872340425,
+      "bunching_rate": 0.0989010989010989,
+      "n_obs": 2541
+    },
+    {
+      "stop_id": "11389",
+      "direction_id": "Inbound",
+      "time_point_order": 4,
+      "on_time_rate": 0.4174757281553398,
+      "bunching_rate": 0.19801980198019803,
+      "n_obs": 2814
+    },
+    {
+      "stop_id": "1160",
+      "direction_id": "Outbound",
+      "time_point_order": 4,
+      "on_time_rate": 0.37412587412587417,
+      "bunching_rate": 0.16854577722100428,
+      "n_obs": 2756
+    },
+    {
+      "stop_id": "11780",
+      "direction_id": "Inbound",
+      "time_point_order": 6,
+      "on_time_rate": 0.0,
+      "bunching_rate": 0.0,
+      "n_obs": 17
+    },
+    {
+      "stop_id": "1317",
+      "direction_id": "Inbound",
+      "time_point_order": 3,
+      "on_time_rate": 0.5,
+      "bunching_rate": 0.16277258566978192,
+      "n_obs": 2910
+    },
+    {
+      "stop_id": "1363",
+      "direction_id": "Outbound",
+      "time_point_order": 2,
+      "on_time_rate": 0.45964506172839503,
+      "bunching_rate": 0.14012611350215193,
+      "n_obs": 2758
+    },
+    {
+      "stop_id": "175",
+      "direction_id": "Inbound",
+      "time_point_order": 8,
+      "on_time_rate": 0.41499149914991496,
+      "bunching_rate": 0.16336633663366337,
+      "n_obs": 1924
+    },
+    {
+      "stop_id": "17861",
+      "direction_id": "Inbound",
+      "time_point_order": 7,
+      "on_time_rate": 0.1038961038961039,
+      "bunching_rate": 0.012987012987012988,
+      "n_obs": 77
+    },
+    {
+      "stop_id": "17865",
+      "direction_id": "Outbound",
+      "time_point_order": 1,
+      "on_time_rate": 0.6,
+      "bunching_rate": 0.0,
+      "n_obs": 10
+    },
+    {
+      "stop_id": "1939",
+      "direction_id": "Outbound",
+      "time_point_order": 5,
+      "on_time_rate": 0.3806947021232735,
+      "bunching_rate": 0.18406974440261542,
+      "n_obs": 2747
+    },
+    {
+      "stop_id": "23391",
+      "direction_id": "Inbound",
+      "time_point_order": 7,
+      "on_time_rate": 0.37037037037037035,
+      "bunching_rate": 0.15053763440860216,
+      "n_obs": 2627
+    },
+    {
+      "stop_id": "23391",
+      "direction_id": "Outbound",
+      "time_point_order": 1,
+      "on_time_rate": 0.7391304347826086,
+      "bunching_rate": 0.07608695652173914,
+      "n_obs": 2255
+    },
+    {
+      "stop_id": "31317",
+      "direction_id": "Inbound",
+      "time_point_order": 4,
+      "on_time_rate": 0.4882654932159882,
+      "bunching_rate": 0.17391710231516055,
+      "n_obs": 2886
+    },
+    {
+      "stop_id": "31365",
+      "direction_id": "Outbound",
+      "time_point_order": 3,
+      "on_time_rate": 0.4222065063649222,
+      "bunching_rate": 0.16266990291262134,
+      "n_obs": 2773
+    },
+    {
+      "stop_id": "41391",
+      "direction_id": "Outbound",
+      "time_point_order": 2,
+      "on_time_rate": 0.5189873417721519,
+      "bunching_rate": 0.11,
+      "n_obs": 2658
+    },
+    {
+      "stop_id": "65741",
+      "direction_id": "Inbound",
+      "time_point_order": 2,
+      "on_time_rate": 0.5724121557454891,
+      "bunching_rate": 0.15841584158415842,
+      "n_obs": 2902
+    },
+    {
+      "stop_id": "81317",
+      "direction_id": "Inbound",
+      "time_point_order": 5,
+      "on_time_rate": 0.46078431372549017,
+      "bunching_rate": 0.17,
+      "n_obs": 2809
+    },
+    {
+      "stop_id": "91391",
+      "direction_id": "Outbound",
+      "time_point_order": 1,
+      "on_time_rate": 0.456958762886598,
+      "bunching_rate": 0.12965955613014435,
+      "n_obs": 2753
+    }
+  ],
+  "byHour": {
+    "0": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 112
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.875,
+        "bunching_rate": 0.0,
+        "n_obs": 113
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 115
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 107
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 112
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 119
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 117
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 116
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 73
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 113
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 112
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 117
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 121
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 110
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 118
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 112
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5833333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 117
+      }
+    ],
+    "1": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 16
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 47
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 16
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 16
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 35
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5833333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 26
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 55
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 17
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 58
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 28
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 65
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.0,
+        "bunching_rate": 0.0,
+        "n_obs": 37
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 32
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 17
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 60
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 56
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 16
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 20
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 56
+      }
+    ],
+    "2": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.0,
+        "bunching_rate": 0.0,
+        "n_obs": 6
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 8
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.0,
+        "bunching_rate": 0.0,
+        "n_obs": 8
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.0,
+        "bunching_rate": 0.0,
+        "n_obs": 8
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.0,
+        "bunching_rate": 0.0,
+        "n_obs": 8
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.0,
+        "bunching_rate": 0.0,
+        "n_obs": 8
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.0,
+        "bunching_rate": 0.0,
+        "n_obs": 8
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.0,
+        "bunching_rate": 0.0,
+        "n_obs": 8
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.0,
+        "bunching_rate": 0.0,
+        "n_obs": 8
+      }
+    ],
+    "5": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 149
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.0,
+        "bunching_rate": 0.0,
+        "n_obs": 8
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 139
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 140
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 66
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 93
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 28
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.8,
+        "bunching_rate": 0.0,
+        "n_obs": 122
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 50
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 58
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 25
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 89
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 69
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.8,
+        "bunching_rate": 0.0,
+        "n_obs": 119
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 49
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 69
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.8333333333333334,
+        "bunching_rate": 0.0,
+        "n_obs": 141
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.8,
+        "bunching_rate": 0.0,
+        "n_obs": 117
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 1.0,
+        "bunching_rate": 0.0,
+        "n_obs": 53
+      }
+    ],
+    "6": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.9,
+        "bunching_rate": 0.11805555555555555,
+        "n_obs": 223
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 147
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.125,
+        "n_obs": 212
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.7777777777777778,
+        "bunching_rate": 0.1111111111111111,
+        "n_obs": 231
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 130
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 176
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 146
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5982142857142857,
+        "bunching_rate": 0.13392857142857142,
+        "n_obs": 195
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 150
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.2857142857142857,
+        "bunching_rate": 0.0,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 148
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 137
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.8333333333333334,
+        "bunching_rate": 0.0,
+        "n_obs": 148
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.4642857142857143,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 177
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.55,
+        "bunching_rate": 0.0,
+        "n_obs": 129
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 129
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.13392857142857142,
+        "n_obs": 193
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.42857142857142855,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 173
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 148
+      }
+    ],
+    "7": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.875,
+        "bunching_rate": 0.125,
+        "n_obs": 197
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 146
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.625,
+        "bunching_rate": 0.125,
+        "n_obs": 196
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.125,
+        "n_obs": 197
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.8,
+        "bunching_rate": 0.0,
+        "n_obs": 166
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 184
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.42857142857142855,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 171
+      },
+      {
+        "stop_id": "11780",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.0,
+        "bunching_rate": 0.0,
+        "n_obs": 17
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 193
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 173
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.42857142857142855,
+        "bunching_rate": 0.2857142857142857,
+        "n_obs": 119
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 151
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.375,
+        "bunching_rate": 0.25,
+        "n_obs": 182
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.875,
+        "bunching_rate": 0.125,
+        "n_obs": 185
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.15476190476190477,
+        "n_obs": 196
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.07142857142857142,
+        "n_obs": 171
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.7142857142857143,
+        "bunching_rate": 0.0,
+        "n_obs": 171
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5277777777777778,
+        "bunching_rate": 0.26785714285714285,
+        "n_obs": 199
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.2,
+        "n_obs": 172
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 173
+      }
+    ],
+    "8": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.8571428571428571,
+        "bunching_rate": 0.0,
+        "n_obs": 191
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 199
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.125,
+        "n_obs": 195
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.7142857142857143,
+        "bunching_rate": 0.125,
+        "n_obs": 194
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.7142857142857143,
+        "bunching_rate": 0.125,
+        "n_obs": 186
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.375,
+        "bunching_rate": 0.25,
+        "n_obs": 197
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.42857142857142855,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 179
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.3571428571428571,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 198
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5857142857142856,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 202
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.3125,
+        "bunching_rate": 0.25,
+        "n_obs": 134
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.4642857142857143,
+        "bunching_rate": 0.125,
+        "n_obs": 198
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.2857142857142857,
+        "n_obs": 205
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.8571428571428571,
+        "bunching_rate": 0.0,
+        "n_obs": 169
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.4017857142857143,
+        "bunching_rate": 0.25,
+        "n_obs": 197
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 200
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.7142857142857143,
+        "bunching_rate": 0.125,
+        "n_obs": 205
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.13392857142857142,
+        "n_obs": 196
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 194
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.19642857142857142,
+        "n_obs": 201
+      }
+    ],
+    "9": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 138
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.42857142857142855,
+        "bunching_rate": 0.2857142857142857,
+        "n_obs": 193
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 165
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.675,
+        "bunching_rate": 0.0,
+        "n_obs": 147
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 156
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.42857142857142855,
+        "bunching_rate": 0.25,
+        "n_obs": 195
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 200
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.18333333333333335,
+        "n_obs": 182
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.08333333333333333,
+        "n_obs": 156
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.42857142857142855,
+        "bunching_rate": 0.2857142857142857,
+        "n_obs": 114
+      },
+      {
+        "stop_id": "17861",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.2,
+        "bunching_rate": 0.0,
+        "n_obs": 5
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.4642857142857143,
+        "bunching_rate": 0.25,
+        "n_obs": 197
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.2857142857142857,
+        "bunching_rate": 0.25,
+        "n_obs": 174
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 125
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.26785714285714285,
+        "n_obs": 179
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.4642857142857143,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 178
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 159
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 181
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 194
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 158
+      }
+    ],
+    "10": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 135
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.3666666666666667,
+        "bunching_rate": 0.25,
+        "n_obs": 115
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 124
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 137
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 116
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.0,
+        "n_obs": 123
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.25,
+        "n_obs": 120
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 140
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.2,
+        "n_obs": 138
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.3666666666666667,
+        "bunching_rate": 0.1,
+        "n_obs": 80
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.3666666666666667,
+        "bunching_rate": 0.25,
+        "n_obs": 121
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 124
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 120
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 116
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 120
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 118
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.2,
+        "n_obs": 142
+      }
+    ],
+    "11": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.29166666666666663,
+        "bunching_rate": 0.25,
+        "n_obs": 113
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.7083333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 121
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.25,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.3666666666666667,
+        "bunching_rate": 0.0,
+        "n_obs": 118
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 110
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.25,
+        "n_obs": 81
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.125,
+        "n_obs": 107
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.125,
+        "n_obs": 101
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 87
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.45,
+        "bunching_rate": 0.2,
+        "n_obs": 128
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.1,
+        "n_obs": 130
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 110
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 110
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 108
+      }
+    ],
+    "12": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.0,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 115
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 116
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 104
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.25,
+        "n_obs": 106
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.41666666666666663,
+        "bunching_rate": 0.0,
+        "n_obs": 110
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 117
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.29166666666666663,
+        "bunching_rate": 0.0,
+        "n_obs": 118
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 69
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.29166666666666663,
+        "bunching_rate": 0.0,
+        "n_obs": 114
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 102
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 75
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.45,
+        "bunching_rate": 0.0,
+        "n_obs": 121
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.125,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 123
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 113
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 106
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 112
+      }
+    ],
+    "13": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.25,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 118
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 115
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 105
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.0,
+        "n_obs": 113
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.25,
+        "n_obs": 110
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.0,
+        "n_obs": 114
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.375,
+        "bunching_rate": 0.125,
+        "n_obs": 113
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.0,
+        "n_obs": 68
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 112
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 101
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 87
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 113
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.29166666666666663,
+        "bunching_rate": 0.25,
+        "n_obs": 114
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.0,
+        "n_obs": 117
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 117
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 113
+      }
+    ],
+    "14": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 150
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.0,
+        "n_obs": 130
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 152
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 154
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.2,
+        "n_obs": 134
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 149
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 136
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.3666666666666667,
+        "bunching_rate": 0.0,
+        "n_obs": 118
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.2,
+        "n_obs": 91
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.3666666666666667,
+        "bunching_rate": 0.0,
+        "n_obs": 124
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.2,
+        "n_obs": 127
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 120
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.18333333333333335,
+        "n_obs": 136
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.2,
+        "n_obs": 135
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 115
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.45,
+        "bunching_rate": 0.0,
+        "n_obs": 155
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 148
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 115
+      }
+    ],
+    "15": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.55,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 147
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.25,
+        "n_obs": 113
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.42857142857142855,
+        "bunching_rate": 0.2,
+        "n_obs": 163
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 148
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 137
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.3333333333333333,
+        "n_obs": 147
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.25,
+        "n_obs": 129
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.2857142857142857,
+        "n_obs": 171
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 148
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 100
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.225,
+        "bunching_rate": 0.2,
+        "n_obs": 131
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.2,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 136
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 93
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.3666666666666667,
+        "bunching_rate": 0.29166666666666663,
+        "n_obs": 153
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.225,
+        "n_obs": 128
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 140
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.25,
+        "n_obs": 149
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.25,
+        "n_obs": 145
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 154
+      }
+    ],
+    "16": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.775,
+        "bunching_rate": 0.07142857142857142,
+        "n_obs": 174
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.2857142857142857,
+        "n_obs": 175
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 154
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 154
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.2,
+        "n_obs": 158
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.25,
+        "n_obs": 145
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.2,
+        "n_obs": 156
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.2,
+        "n_obs": 153
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.2,
+        "n_obs": 153
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.2,
+        "bunching_rate": 0.2,
+        "n_obs": 104
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.2857142857142857,
+        "bunching_rate": 0.3333333333333333,
+        "n_obs": 162
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.16666666666666666,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 135
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 103
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 147
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.29166666666666663,
+        "bunching_rate": 0.25,
+        "n_obs": 170
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.2,
+        "n_obs": 149
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.2,
+        "n_obs": 155
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.25,
+        "n_obs": 145
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.2,
+        "n_obs": 167
+      }
+    ],
+    "17": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.8333333333333334,
+        "bunching_rate": 0.0,
+        "n_obs": 147
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.2,
+        "bunching_rate": 0.3333333333333333,
+        "n_obs": 148
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 153
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.08333333333333333,
+        "n_obs": 153
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 146
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 152
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.2857142857142857,
+        "bunching_rate": 0.2857142857142857,
+        "n_obs": 167
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.18333333333333335,
+        "n_obs": 155
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.26785714285714285,
+        "bunching_rate": 0.25,
+        "n_obs": 168
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 109
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.2857142857142857,
+        "bunching_rate": 0.26785714285714285,
+        "n_obs": 164
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 140
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 133
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.45,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 160
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.3333333333333333,
+        "n_obs": 156
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.2857142857142857,
+        "bunching_rate": 0.14285714285714285,
+        "n_obs": 166
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 153
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 156
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.225,
+        "n_obs": 154
+      }
+    ],
+    "18": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.8333333333333334,
+        "bunching_rate": 0.0,
+        "n_obs": 159
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.2857142857142857,
+        "bunching_rate": 0.225,
+        "n_obs": 195
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.6333333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 153
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.07142857142857142,
+        "n_obs": 176
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 141
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.25,
+        "n_obs": 189
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.18333333333333335,
+        "n_obs": 160
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.4642857142857143,
+        "bunching_rate": 0.2,
+        "n_obs": 176
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 154
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.42857142857142855,
+        "bunching_rate": 0.25,
+        "n_obs": 130
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.2857142857142857,
+        "bunching_rate": 0.225,
+        "n_obs": 172
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.25,
+        "n_obs": 174
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 103
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.2857142857142857,
+        "n_obs": 168
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.30952380952380953,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 174
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 150
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5857142857142856,
+        "bunching_rate": 0.15476190476190477,
+        "n_obs": 174
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.42857142857142855,
+        "bunching_rate": 0.2857142857142857,
+        "n_obs": 168
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.16666666666666666,
+        "n_obs": 152
+      }
+    ],
+    "19": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 114
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.2,
+        "n_obs": 137
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.675,
+        "bunching_rate": 0.0,
+        "n_obs": 136
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 117
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 115
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.2,
+        "n_obs": 135
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 115
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.2,
+        "n_obs": 137
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 84
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.2,
+        "n_obs": 141
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 114
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.8,
+        "bunching_rate": 0.0,
+        "n_obs": 119
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.55,
+        "bunching_rate": 0.0,
+        "n_obs": 140
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.3666666666666667,
+        "bunching_rate": 0.225,
+        "n_obs": 122
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 120
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.625,
+        "bunching_rate": 0.0,
+        "n_obs": 120
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 116
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 139
+      }
+    ],
+    "20": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.8,
+        "bunching_rate": 0.0,
+        "n_obs": 131
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 140
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 116
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 130
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 120
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.0,
+        "n_obs": 132
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.29166666666666663,
+        "bunching_rate": 0.0,
+        "n_obs": 139
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 140
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 118
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.2,
+        "bunching_rate": 0.0,
+        "n_obs": 103
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.29166666666666663,
+        "bunching_rate": 0.0,
+        "n_obs": 121
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.0,
+        "n_obs": 124
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 86
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 121
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 134
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 123
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 131
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 128
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 121
+      }
+    ],
+    "21": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 127
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 110
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 107
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 123
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 114
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5833333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 112
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 82
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 128
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 10,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 108
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 92
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 126
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 113
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 112
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 124
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 132
+      }
+    ],
+    "22": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 115
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.45,
+        "bunching_rate": 0.0,
+        "n_obs": 116
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 115
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 116
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 102
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 112
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 110
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 118
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 139
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 96
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 114
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.3333333333333333,
+        "bunching_rate": 0.0,
+        "n_obs": 98
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 90
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.6666666666666666,
+        "bunching_rate": 0.0,
+        "n_obs": 114
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 116
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 110
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 132
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 115
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 116
+      }
+    ],
+    "23": [
+      {
+        "stop_id": "10642",
+        "direction_id": "Inbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 114
+      },
+      {
+        "stop_id": "10642",
+        "direction_id": "Outbound",
+        "time_point_order": 6,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.2,
+        "n_obs": 136
+      },
+      {
+        "stop_id": "11131",
+        "direction_id": "Inbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 115
+      },
+      {
+        "stop_id": "1128",
+        "direction_id": "Inbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 115
+      },
+      {
+        "stop_id": "11388",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "11389",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.0,
+        "n_obs": 128
+      },
+      {
+        "stop_id": "1160",
+        "direction_id": "Outbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 133
+      },
+      {
+        "stop_id": "1317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.675,
+        "bunching_rate": 0.0,
+        "n_obs": 132
+      },
+      {
+        "stop_id": "1363",
+        "direction_id": "Outbound",
+        "time_point_order": 2,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 119
+      },
+      {
+        "stop_id": "175",
+        "direction_id": "Inbound",
+        "time_point_order": 8,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 87
+      },
+      {
+        "stop_id": "1939",
+        "direction_id": "Outbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.25,
+        "bunching_rate": 0.0,
+        "n_obs": 131
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Inbound",
+        "time_point_order": 9,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 123
+      },
+      {
+        "stop_id": "23391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 111
+      },
+      {
+        "stop_id": "31317",
+        "direction_id": "Inbound",
+        "time_point_order": 5,
+        "on_time_rate": 0.6,
+        "bunching_rate": 0.0,
+        "n_obs": 133
+      },
+      {
+        "stop_id": "31365",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.4,
+        "bunching_rate": 0.0,
+        "n_obs": 134
+      },
+      {
+        "stop_id": "41391",
+        "direction_id": "Outbound",
+        "time_point_order": 3,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 110
+      },
+      {
+        "stop_id": "65741",
+        "direction_id": "Inbound",
+        "time_point_order": 4,
+        "on_time_rate": 0.75,
+        "bunching_rate": 0.0,
+        "n_obs": 116
+      },
+      {
+        "stop_id": "81317",
+        "direction_id": "Inbound",
+        "time_point_order": 7,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 131
+      },
+      {
+        "stop_id": "91391",
+        "direction_id": "Outbound",
+        "time_point_order": 1,
+        "on_time_rate": 0.5,
+        "bunching_rate": 0.0,
+        "n_obs": 114
+      }
+    ]
+  }
+}

@@ -1,4 +1,14 @@
-# Query key and value can be determined by inspecting regions on OSM
+"""
+Curated OSM relation identifiers for the Massachusetts cities the LTS
+pipeline runs against.
+
+Each entry's `key` / `value` pair must uniquely match the relation on
+openstreetmap.org. The most reliable choice is usually `wikipedia` +
+the English Wikipedia page title, but any tag works as long as it
+returns exactly one relation. Add a new city by inspecting it on
+openstreetmap.org and copying a tag pair.
+"""
+
 CITIES = {
     "Arlington": {
         "key": "wikipedia",
