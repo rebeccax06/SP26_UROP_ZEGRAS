@@ -82,11 +82,19 @@ export interface ScorecardRow {
 }
 
 // --- API request/response shapes ---
+/**
+ * Query parameters accepted by `GET /api/scorecard`. Either `date` (single
+ * day) or `startDate` + `endDate` (range) is required. `startTime` /
+ * `endTime` default to "07:00" / "09:00" if omitted.
+ */
 export interface ScorecardQueryParams {
   schoolId: string;
-  timeWindow: TimeWindowId;
-  startDate: string; // YYYY-MM-DD
-  endDate: string;
+  date?: string;
+  startTime?: string;
+  endTime?: string;
+  startDate?: string;
+  endDate?: string;
+  radiusMeters?: number;
 }
 
 /** Per-route headway summary at a stop (for map popups) */
@@ -146,15 +154,22 @@ export interface RouteStopHeadway {
   ridershipLoad?: number | null;
 }
 
+/**
+ * Shape returned by `GET /api/scorecard`. Mirrors the response built in
+ * `src/app/api/scorecard/route.ts`.
+ */
 export interface ScorecardApiResponse {
   schoolId: string;
-  timeWindow: TimeWindowId;
+  /** Single-day analysis date in YYYY-MM-DD, or null for date-range queries. */
+  date: string | null;
+  startTime: string;
+  endTime: string;
   startDate: string;
   endDate: string;
   rows: ScorecardRow[];
   stops: Stop[];
   routes: Route[];
-  /** Per-stop headways by route (for map popups). Only present when scorecard has data. */
+  /** Per-stop headways by route (for map popups). */
   headwaysByStop?: StopWithHeadways[];
 }
 

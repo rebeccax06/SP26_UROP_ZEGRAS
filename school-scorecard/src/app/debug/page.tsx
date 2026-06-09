@@ -5,6 +5,27 @@ import useSWR from 'swr';
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
+interface DebugStop {
+  stopId: string;
+  stopName: string;
+  distanceMeters: number;
+  lat: number;
+  lon: number;
+}
+
+interface DebugRoute {
+  routeId: string;
+  routeShortName: string;
+  routeLongName: string;
+}
+
+interface DebugScheduledHeadway {
+  routeId: string;
+  stopId: string;
+  scheduledMedianHeadwayMinutes: number;
+  tripCount: number;
+}
+
 export default function DebugPage() {
   const [schoolId, setSchoolId] = useState('demo');
   const [radiusMeters, setRadiusMeters] = useState(800);
@@ -110,7 +131,7 @@ export default function DebugPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {stopsData.stops.map((s: any) => (
+                  {stopsData.stops.map((s: DebugStop) => (
                     <tr key={s.stopId} style={{ borderBottom: '1px solid #eee' }}>
                       <td style={{ padding: 8 }}>{s.stopId}</td>
                       <td style={{ padding: 8 }}>{s.stopName}</td>
@@ -152,7 +173,7 @@ export default function DebugPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {routesData.routes.map((r: any) => (
+                  {routesData.routes.map((r: DebugRoute) => (
                     <tr key={r.routeId} style={{ borderBottom: '1px solid #eee' }}>
                       <td style={{ padding: 8 }}>{r.routeId}</td>
                       <td style={{ padding: 8 }}>{r.routeShortName}</td>
@@ -194,7 +215,7 @@ export default function DebugPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {scheduleData.scheduledHeadways.map((h: any, i: number) => (
+                  {scheduleData.scheduledHeadways.map((h: DebugScheduledHeadway, i: number) => (
                     <tr key={`${h.routeId}-${h.stopId}-${i}`} style={{ borderBottom: '1px solid #eee' }}>
                       <td style={{ padding: 8 }}>{h.routeId}</td>
                       <td style={{ padding: 8 }}>{h.stopId}</td>

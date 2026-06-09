@@ -4,8 +4,7 @@
 
 This app measures **MBTA bus reliability around schools** by comparing:
 - **Scheduled** headways (from GTFS static schedule)
-- **Archived** headways (last week's actual performance from MBTA)
-- **Live** headways (real-time from Swiftly API)
+- **Archived** headways (actual performance from a monthly MBTA Bus Arrival/Departure CSV)
 
 The goal: help identify which bus routes are unreliable for students getting to/from school.
 
@@ -22,8 +21,7 @@ The goal: help identify which bus routes are unreliable for students getting to/
    ↓
 4. For each route/stop combination, compute:
    - Scheduled median headway (from GTFS)
-   - Archived median headway (last 7 days from MBTA)
-   - Live median headway (last 60 min from Swiftly)
+   - Archived median headway (from the loaded MBTA CSV)
    ↓
 5. Calculate reliability ratios (observed/scheduled)
    ↓
@@ -52,7 +50,7 @@ The goal: help identify which bus routes are unreliable for students getting to/
 
 ---
 
-### 2. **School Scorecard Page** (`/school/demo`)
+### 2. **School Scorecard Page** (`/school/[schoolId]`)
 
 **Purpose**: Main interface showing reliability metrics
 
@@ -75,13 +73,10 @@ Columns explained:
 | **Route** | Bus route name (e.g., "1 - Route 1") |
 | **Stop** | Key stop name for this route |
 | **Sched (min)** | Scheduled median headway (from GTFS schedule) |
-| **Archived (min)** | Last week's actual median headway |
+| **Archived (min)** | Actual median headway from the loaded MBTA CSV |
 | **Archived IQR** | Interquartile range (P25–P75) showing variability |
 | **Bunch %** | Percentage of headways that were "bunched" (< 50% of scheduled or < 4 min) |
-| **Live (min)** | Real-time median headway (last 60 minutes) |
-| **Live IQR** | Real-time variability |
 | **Rel. (arch)** | **Reliability ratio** = Archived/Scheduled (1.0 = perfect, < 0.8 = worse than scheduled, > 1.2 = better than scheduled) |
-| **Rel. (live)** | Live reliability ratio |
 
 **Color coding**:
 - 🔴 Red reliability ratio (< 0.8) = Worse than scheduled (unreliable)
@@ -146,7 +141,7 @@ The app analyzes three time periods:
 4. Check routes are detected
 
 ### Step 2: View Scorecard
-1. Go to `/school/demo`
+1. Go to `/school/madison-park` (or another configured school)
 2. Adjust radius slider if needed (default 800m)
 3. Select time window (AM/PM/AS)
 4. Review scorecard table
@@ -154,30 +149,6 @@ The app analyzes three time periods:
 ### Step 3: Interpret Results
 - **Look for routes with low reliability ratios** (< 0.8) = unreliable
 - **Check bunching rates** - High = poor service quality
-- **Compare archived vs live** - See if current conditions match last week
-
----
-
-## Current Limitations
-
-### MVP Status
-- **Archived data**: Placeholder - needs MBTA archive endpoint configured
-- **Live data**: Placeholder - needs Swiftly API configured
-- **Scheduled data**: ✅ Working (from GTFS)
-
-### What Works Now
-- ✅ GTFS loading and parsing
-- ✅ Finding stops near school
-- ✅ Finding routes serving stops
-- ✅ Computing scheduled headways
-- ✅ Map display
-- ✅ Scorecard table structure
-
-### What Needs Configuration
-- ⚠️ MBTA archived metrics endpoint (set `MBTA_ARCHIVE_BASE_URL` in `.env.local`)
-- ⚠️ Swiftly API endpoint (set `SWIFTLY_API_KEY`, `SWIFTLY_BASE_URL` in `.env.local`)
-
-Until those are configured, archived and live columns will show "—" (no data).
 
 ---
 
@@ -193,7 +164,7 @@ Reliability: 1.5
 
 **Meaning**:
 - Schedule says buses every 10 minutes
-- Last week, actual median was 15 minutes
+- The archived CSV shows an actual median of 15 minutes
 - Reliability ratio 1.5 = buses were 50% less frequent than scheduled
 - **Conclusion**: This route is unreliable for students
 
@@ -209,21 +180,15 @@ Reliability: 1.5
    - `stop_times.txt`: When buses arrive at stops
    - `calendar.txt`: Service days
 
-2. **MBTA Archived** (TODO): Last week's performance metrics
-   - Needs endpoint configuration
-
-3. **Swiftly** (TODO): Real-time arrival data
-   - Needs API key and endpoint
+2. **MBTA Bus Arrival/Departure CSV** (`data/mbta-bus/MBTA-Bus-Arrival-Departure-Times_YYYY-MM.csv`): observed arrival/departure rows used for archived metrics, heatmaps, and the `/route-simulation` moving-dots animation.
 
 ### Caching
 - Server-side cache with TTL:
-  - GTFS: Cached after first load
+  - GTFS: cached after first load
   - Stops/Routes: 5 minutes
-  - Scorecard: 2 minutes
-  - MBTA Archived: 10 minutes
-  - Swiftly Live: 30 seconds
+  - Scorecard: cached for the process lifetime (input is static files)
 
 ### Performance
 - GTFS loads once and stays in memory
 - Only fetches data for stops/routes currently in view
-- Minimizes API calls with caching
+- Minimizes recomputation with caching
